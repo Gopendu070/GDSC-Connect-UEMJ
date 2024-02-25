@@ -2,6 +2,15 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class FilterProvider with ChangeNotifier {
+  ///////////////////////////////////
+  int _imgCount = 0;
+  int get imgCount => _imgCount;
+  void setImgCount(int c) {
+    _imgCount = c;
+    notifyListeners();
+  }
+
+  //////////////////////////////////
   bool _isUpcoming = true;
   bool get isUpcoming => _isUpcoming;
 

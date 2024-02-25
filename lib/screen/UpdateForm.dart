@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gdscuemj/controller/FireBaseControlls.dart';
 import 'package:intl/intl.dart';
 
 import '../utils/Utils.dart';
@@ -51,6 +52,7 @@ class _UpdateFormState extends State<UpdateForm> {
   @override
   Widget build(BuildContext context) {
     var Width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(title: Text('Update Event')),
       body: Center(
@@ -113,8 +115,10 @@ class _UpdateFormState extends State<UpdateForm> {
                       )
                     : Text(
                         selectedTime +
-                            ', ' +
-                            DateFormat('d MMM').format(selectedDT).toString(),
+                            ' ~ ' +
+                            DateFormat('d MMM, yyyy')
+                                .format(selectedDT)
+                                .toString(),
                         style: Utils.dtStyle,
                       )
               ],
@@ -125,7 +129,16 @@ class _UpdateFormState extends State<UpdateForm> {
                 onPressed: () {
                   final isValid = formkey.currentState!.validate();
                   if (isValid == true) {
-                    updateEvent();
+                    FireBaseControlls.updateEvent(
+                        dbRef: widget.dbRef,
+                        eventID: widget.eventID,
+                        name: nameController.text,
+                        description: descriptController.text,
+                        org: orgController.text,
+                        venue: venueController.text,
+                        dateTime: widget.dateTime,
+                        selectedDT: selectedDT,
+                        selectedTime: selectedTime);
                     Fluttertoast.showToast(
                       msg: "Updated",
                       toastLength: Toast.LENGTH_SHORT,
@@ -185,24 +198,6 @@ class _UpdateFormState extends State<UpdateForm> {
     );
   }
 
-  Future<void> updateEvent() async {
-    String dateTime;
-    if (selectedTime == "") {
-      dateTime = widget.dateTime;
-    } else {
-      dateTime = selectedTime +
-          ', ' +
-          DateFormat('d MMM').format(selectedDT).toString();
-    }
-    await widget.dbRef.child(widget.eventID.toString()).update({
-      "name": nameController.text.toString(),
-      "organizer": orgController.text.toString(),
-      "description": descriptController.text.toString(),
-      "venue": venueController.text.toString(),
-      "date_time": dateTime,
-    });
-  }
-
   //Date Picker
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
@@ -227,7 +222,7 @@ class _UpdateFormState extends State<UpdateForm> {
         await showTimePicker(context: context, initialTime: TimeOfDay.now());
 
     if (pickedTime != null) {
-      final formattedTime = DateFormat.Hm()
+      final formattedTime = DateFormat('h:mm a')
           .format(DateTime(0, 1, 1, pickedTime.hour, pickedTime.minute));
       print(pickedTime.toString());
       setState(() {

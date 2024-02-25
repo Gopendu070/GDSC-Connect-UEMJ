@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:gdscuemj/widget/CustomDivider.dart';
 import 'package:gdscuemj/widget/EventImage.dart';
 import 'package:gdscuemj/widget/tiles.dart';
 import 'package:intl/intl.dart';
@@ -88,94 +89,112 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
             Positioned(
               top: HEIGHT / 3 - 32,
               child: Container(
-                height: HEIGHT - 250,
+                height: HEIGHT - HEIGHT * 0.3,
                 width: WIDTH,
                 decoration: BoxDecoration(
                     color: Colors.white,
+                    gradient: LinearGradient(
+                        begin: Alignment.centerLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Color.fromARGB(255, 240, 216, 244),
+                          Colors.white,
+                          Color.fromARGB(146, 232, 195, 234),
+                        ]),
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(18),
                         topRight: Radius.circular(18))),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      //Title
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          left: 15,
-                          top: 12,
+                child: Scrollbar(
+                  thickness: 5,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        //Title
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            left: 15,
+                            top: 12,
+                          ),
+                          child: Text(widget.title,
+                              style: Utils.style1.copyWith(fontSize: 21)),
                         ),
-                        child: Text(widget.title,
-                            style: Utils.style1.copyWith(fontSize: 21)),
-                      ),
-                      //Organizer's details
-                      Padding(
-                        padding: EdgeInsets.all(10),
-                        child: Column(
-                          children: [
-                            Tiles(
-                                icon: Icons.play_arrow_outlined,
-                                text: widget.organiser),
-                            Tiles(
-                                icon: Icons.calendar_month,
-                                text: widget.date_time),
-                            Tiles(icon: Icons.location_on, text: widget.venue),
-                          ],
+                        CustomDivider(),
+                        //Organizer's details
+                        Padding(
+                          padding: EdgeInsets.all(10),
+                          child: Column(
+                            children: [
+                              Tiles(
+                                  icon: Icons.play_arrow_outlined,
+                                  text: widget.organiser),
+                              Tiles(
+                                  icon: Icons.calendar_month,
+                                  text: widget.date_time),
+                              Tiles(
+                                  icon: Icons.location_on, text: widget.venue),
+                            ],
+                          ),
                         ),
-                      ),
 
-                      //Description about the event
-                      Padding(
-                        padding: const EdgeInsets.all(18.0),
-                        child: Text(
-                          'About The Event',
-                          style: TextStyle(
-                              fontSize: HEIGHT * 0.021,
-                              fontWeight: FontWeight.w500),
+                        CustomDivider(),
+                        //Description about the event
+                        Padding(
+                          padding: const EdgeInsets.all(18.0),
+                          child: Text(
+                            'About The Event',
+                            style: TextStyle(
+                                fontSize: HEIGHT * 0.021,
+                                fontWeight: FontWeight.w500),
+                          ),
                         ),
-                      ),
-                      //Event Description
-                      Padding(
-                        padding: const EdgeInsets.only(left: 18, right: 18),
-                        child: Text(
-                          widget.description,
-                          textAlign: TextAlign.justify,
-                          style: Utils.style1.copyWith(fontSize: 15),
-                        ),
-                      ),
 
-                      imageURLs.isNotEmpty
-                          ? Padding(
-                              padding: const EdgeInsets.all(15.5),
-                              child: Container(
-                                height: 170,
-                                width: double.infinity,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text('Event Gallery',
-                                        style: TextStyle(
-                                            fontSize: HEIGHT * 0.021,
-                                            fontWeight: FontWeight.w500)),
-                                    SizedBox(height: 10),
-                                    Expanded(
-                                      child: ListView.builder(
-                                        shrinkWrap: true,
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount: imageURLs.length,
-                                        itemBuilder: (context, index) {
-                                          return EventImage(
-                                              index: index,
-                                              imageURLs: imageURLs);
-                                        },
+                        Padding(
+                          padding: const EdgeInsets.only(left: 18, right: 18),
+                          child: Text(
+                            widget.description,
+                            textAlign: TextAlign.justify,
+                            style: Utils.style1.copyWith(fontSize: 15),
+                          ),
+                        ),
+                        CustomDivider(),
+                        //Gallery
+                        imageURLs.isNotEmpty
+                            ? Padding(
+                                padding: const EdgeInsets.all(15.5),
+                                child: Container(
+                                  height: 170,
+                                  width: double.infinity,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text('Event Gallery',
+                                          style: TextStyle(
+                                              fontSize: HEIGHT * 0.021,
+                                              fontWeight: FontWeight.w500)),
+                                      SizedBox(height: 10),
+                                      Expanded(
+                                        child: Scrollbar(
+                                          child: ListView.builder(
+                                            shrinkWrap: true,
+                                            scrollDirection: Axis.horizontal,
+                                            itemCount: imageURLs.length,
+                                            itemBuilder: (context, index) {
+                                              return EventImage(
+                                                  index: index,
+                                                  imageURLs: imageURLs);
+                                            },
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            )
-                          : Container(),
-                    ],
+                              )
+                            : Container(),
+                      ],
+                    ),
                   ),
                 ),
               ),

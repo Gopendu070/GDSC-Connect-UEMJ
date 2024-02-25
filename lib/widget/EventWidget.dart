@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gdscuemj/controller/FireBaseControlls.dart';
 import 'package:gdscuemj/screen/EventDetails.dart';
 import 'package:gdscuemj/screen/UpdateForm.dart';
 
@@ -195,13 +196,9 @@ class EventWidget extends StatelessWidget {
                       children: [Icon(Icons.edit), Text('Edit')])),
               //To delete
               OutlinedButton(
-                  onPressed: () async {
-                    await dbRef.child(ID).remove();
-                    Fluttertoast.showToast(
-                        msg: 'Deleted',
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.BOTTOM);
-                    Navigator.pop(context);
+                  onPressed: () {
+                    FireBaseControlls.deleteEvent(
+                        context: context, dbRef: dbRef, ID: ID);
                   },
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,

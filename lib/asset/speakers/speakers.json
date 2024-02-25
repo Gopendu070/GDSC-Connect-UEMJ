@@ -1,0 +1,22 @@
+{
+    "speakers":[
+        {
+            "fname":"Anupam",
+            "lname":"Dey",
+            "imgUrl":"",
+            "linkedinUrl":""
+        },
+        {
+            "name":"Ritabrata",
+            "lname":"Malik",
+            "imgUrl":"",
+            "linkedinUrl":""
+        },
+        {
+            "name":"Alexsis",
+            "lname":"",
+            "imgUrl":"",
+            "linkedinUrl":""
+        }
+    ]
+}

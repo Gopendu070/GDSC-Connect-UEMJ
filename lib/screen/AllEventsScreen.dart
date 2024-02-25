@@ -77,28 +77,31 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
             width: Width,
             height: Height * .6,
             child: Consumer<FilterProvider>(
-              builder: (context, value, child) => FirebaseAnimatedList(
-                scrollDirection: Axis.horizontal,
-                query: dbRef,
-                itemBuilder: (context, snapshot, animation, index) {
-                  return FutureBuilder<String>(
-                    future: getFirstImageURL(snapshot),
-                    builder: (context, imageUrlSnapshot) {
-                      //Filternig the list => upcoming events
-                      if (value.isUpcoming && timeDifference(snapshot) >= 0) {
-                        return eventSelection(snapshot,
-                            imageUrlSnapshot); //returns the filtered event
-                      }
-                      //Filternig the list => past events
-                      else if (!value.isUpcoming &&
-                          timeDifference(snapshot) < 0) {
-                        return eventSelection(snapshot, imageUrlSnapshot);
-                      } else {
-                        return Container();
-                      }
-                    },
-                  );
-                },
+              builder: (context, value, child) => Scrollbar(
+                thickness: 2,
+                child: FirebaseAnimatedList(
+                  scrollDirection: Axis.horizontal,
+                  query: dbRef,
+                  itemBuilder: (context, snapshot, animation, index) {
+                    return FutureBuilder<String>(
+                      future: getFirstImageURL(snapshot),
+                      builder: (context, imageUrlSnapshot) {
+                        //Filternig the list => upcoming events
+                        if (value.isUpcoming && timeDifference(snapshot) >= 0) {
+                          return eventSelection(snapshot,
+                              imageUrlSnapshot); //returns the filtered event
+                        }
+                        //Filternig the list => past events
+                        else if (!value.isUpcoming &&
+                            timeDifference(snapshot) < 0) {
+                          return eventSelection(snapshot, imageUrlSnapshot);
+                        } else {
+                          return Container();
+                        }
+                      },
+                    );
+                  },
+                ),
               ),
             ),
           ),

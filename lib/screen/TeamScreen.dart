@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gdscuemj/controller/Members.dart';
@@ -9,8 +10,11 @@ import 'package:gdscuemj/screen/HomePage.dart';
 import 'package:gdscuemj/screen/SocialPagesScreen.dart';
 import 'package:gdscuemj/utils/Utils.dart';
 import 'package:gdscuemj/widget/CustomDivider.dart';
+import 'package:gdscuemj/widget/MemberTileWidget.dart';
 import 'package:gdscuemj/widget/NavigationButton.dart';
 import 'package:provider/provider.dart';
+
+import 'package:url_launcher/url_launcher.dart';
 
 import '../controller/NavProvider.dart';
 
@@ -38,74 +42,14 @@ class _TeamScreenState extends State<TeamScreen> {
             children: [
               CustomDivider(),
               Expanded(
-                child: ListView.builder(
-                  itemCount: Members.members.length,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        width: double.infinity,
-                        height: 120,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(14),
-                            gradient: LinearGradient(
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                                colors: [
-                                  Color.fromARGB(124, 148, 157, 182),
-                                  Color.fromARGB(82, 211, 213, 223),
-                                  Colors.white38,
-                                ])),
-                        child: Stack(
-                          children: [
-                            Positioned(
-                              top: 5,
-                              left: 5,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(70),
-                                child: Container(
-                                  height: 110,
-                                  width: 110,
-                                  decoration:
-                                      BoxDecoration(color: Colors.white54),
-                                ),
-                              ),
-                            ),
-                            Positioned(
-                                top: 80,
-                                left: 75,
-                                child: Image.asset(
-                                    'lib/asset/image/GDSC_rmbg.png',
-                                    height: 40)),
-                            Positioned(
-                              top: 30,
-                              left: 130,
-                              child: Container(
-                                child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        Members.members[index]["name"],
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.black54),
-                                      ),
-                                      Text(
-                                        "< " + "Developer" + " >",
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            color: Colors.blueGrey),
-                                      ),
-                                    ]),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    );
-                  },
+                child: Scrollbar(
+                  thickness: 7,
+                  child: ListView.builder(
+                    itemCount: Members.members.length,
+                    itemBuilder: (context, index) {
+                      return MemberTileWidget(index: index);
+                    },
+                  ),
                 ),
               ),
             ],

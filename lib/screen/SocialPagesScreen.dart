@@ -8,7 +8,9 @@ import 'package:gdscuemj/screen/TeamScreen.dart';
 import 'package:gdscuemj/utils/Utils.dart';
 import 'package:gdscuemj/widget/CustomDivider.dart';
 import 'package:gdscuemj/widget/NavigationButton.dart';
+import 'package:gdscuemj/widget/SocialHandleTile.dart';
 import 'package:provider/provider.dart';
+import 'package:lottie/lottie.dart';
 
 class SocialPagesScreen extends StatefulWidget {
   const SocialPagesScreen({super.key});
@@ -25,12 +27,41 @@ class _SocialPagesScreenState extends State<SocialPagesScreen> {
     final navProvider = Provider.of<NavProvider>(context, listen: false);
     return Scaffold(
         appBar: AppBar(
-            title: Text("Media Handles",
+            title: Text("Social Handles",
                 style: Utils.style1.copyWith(fontSize: 26)),
             centerTitle: true),
         body: Container(
           child: Column(
-            children: [CustomDivider()],
+            children: [
+              CustomDivider(),
+              SocialHandleTile(
+                  title: "Join Our GDSC Community",
+                  url_str:
+                      "https://gdsc.community.dev/university-of-engineering-management-jaipur/",
+                  icon_path: "lib/asset/image/GDSC_rmbg.png",
+                  cust_color: const Color.fromARGB(255, 220, 163, 230)),
+              SocialHandleTile(
+                  title: "Join WhatsApp Group",
+                  url_str: "https://chat.whatsapp.com/Dy5z0J19woj3aUYkWrs7wh",
+                  icon_path: "lib/asset/image/wp.png",
+                  cust_color: Color.fromARGB(190, 95, 217, 93)),
+              SocialHandleTile(
+                  title: "GDSC UEM JAIPUR",
+                  url_str:
+                      "https://www.linkedin.com/company/gdsc-uemjaipur/mycompany/",
+                  icon_path: "lib/asset/image/in_icon.png",
+                  cust_color: Color.fromARGB(189, 97, 157, 221)),
+              SocialHandleTile(
+                  title: "@uemjaipur_gdsc",
+                  url_str:
+                      "https://www.instagram.com/uemjaipur_gdsc?igshid=NjIwNzIyMDk2Mg%3D%3D",
+                  icon_path: "lib/asset/image/insta.png",
+                  cust_color: Color.fromARGB(205, 221, 84, 127)),
+              Expanded(
+                  child: Lottie.asset(
+                'lib/asset/image/SocialAnimation.json',
+              )),
+            ],
           ),
         ),
         bottomNavigationBar: Consumer(

@@ -4,14 +4,19 @@ import 'dart:io';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gdscuemj/controller/FilterProvider.dart';
+import 'package:gdscuemj/controller/FireBaseControlls.dart';
 import 'package:gdscuemj/screen/PickImage.dart';
 import 'package:gdscuemj/utils/Utils.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class EntryForm extends StatefulWidget {
   DatabaseReference dbRef;
   String eventID;
-  EntryForm({required this.dbRef, required this.eventID});
+  int imgCount;
+  EntryForm(
+      {required this.dbRef, required this.eventID, required this.imgCount});
 
   @override
   State<EntryForm> createState() => _EntryFormState();
@@ -28,6 +33,7 @@ class _EntryFormState extends State<EntryForm> {
   var venueController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final filterProvider = Provider.of<FilterProvider>(context);
     var Height = MediaQuery.of(context).size.height;
     var Width = MediaQuery.of(context).size.width;
 
@@ -151,7 +157,15 @@ class _EntryFormState extends State<EntryForm> {
                             },
                           ));
                         },
-                        icon: Icon(Icons.camera_alt_rounded))
+                        icon: Icon(Icons.camera_alt_rounded)),
+                    Consumer<FilterProvider>(
+                      builder: (context, value, child) {
+                        return Text(
+                          value.imgCount.toString() + " Uploaded",
+                          style: Utils.labelStyle.copyWith(fontSize: 13),
+                        );
+                      },
+                    )
                   ]),
                   SizedBox(height: 20),
                   //Submit Button
@@ -159,14 +173,26 @@ class _EntryFormState extends State<EntryForm> {
                       onPressed: () {
                         final isValid = formkey.currentState!.validate();
                         if (isValid == true) {
-                          addEvent();
-                          Fluttertoast.showToast(
-                            msg: "Event Scehduled",
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.BOTTOM,
-                          );
-                          Timer(Duration(seconds: 1), () {
-                            Navigator.pop(context);
+                          //Add to Firebase
+                          FireBaseControlls.addEvent(
+                                  dbRef: widget.dbRef,
+                                  eventID: widget.eventID,
+                                  name: nameController.text,
+                                  org: orgController.text,
+                                  description: descriptController.text,
+                                  venue: venueController.text,
+                                  selectedTime: selectedTime,
+                                  selectedDT: selectedDT)
+                              .whenComplete(() {
+                            filterProvider.setImgCount(0);
+                            Fluttertoast.showToast(
+                              msg: "Event Scehduled",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                            );
+                            Timer(Duration(seconds: 1), () {
+                              Navigator.pop(context);
+                            });
                           });
                         }
                       },
@@ -178,20 +204,6 @@ class _EntryFormState extends State<EntryForm> {
         ),
       ]),
     );
-  }
-
-//Push data to Firebase
-  Future<void> addEvent() async {
-    await widget.dbRef.child(widget.eventID.toString()).set({
-      "id": widget.eventID,
-      "name": nameController.text.toString(),
-      "organizer": orgController.text.toString(),
-      "description": descriptController.text.toString(),
-      "venue": venueController.text.toString(),
-      "date_time": DateFormat('h:mm a').format(selectedTime).toString() +
-          ' ' +
-          DateFormat('d MMM, yyyy').format(selectedDT).toString(),
-    });
   }
 
   //returns a custom widget

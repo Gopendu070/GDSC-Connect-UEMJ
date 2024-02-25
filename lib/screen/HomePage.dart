@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -7,14 +8,18 @@ import 'package:flutter/material.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:gdscuemj/controller/NavProvider.dart';
+import 'package:gdscuemj/screen/AddSpeakerForm.dart';
 import 'package:gdscuemj/screen/AllEventsScreen.dart';
 import 'package:gdscuemj/screen/EntryForm.dart';
 import 'package:gdscuemj/screen/SocialPagesScreen.dart';
 import 'package:gdscuemj/screen/TeamScreen.dart';
 import 'package:gdscuemj/utils/Utils.dart';
 import 'package:gdscuemj/widget/CustomDivider.dart';
+import 'package:gdscuemj/widget/DrawerButton.dart';
 import 'package:gdscuemj/widget/EventWidget.dart';
 import 'package:gdscuemj/widget/NavigationButton.dart';
+import 'package:gdscuemj/widget/SpeakerTileWidget.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -26,9 +31,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final dbRef = FirebaseDatabase.instance.ref('gdscDB');
+  final speakerDbRef = FirebaseDatabase.instance.ref('gdscSpeakerDB');
   late String imageUrl1;
 
-  late String eventID;
   @override
   Widget build(BuildContext context) {
     var Height = MediaQuery.of(context).size.height;
@@ -36,30 +41,85 @@ class _HomePageState extends State<HomePage> {
 
     final navProvider = Provider.of<NavProvider>(context, listen: false);
     return Scaffold(
+      //Drawer
+      endDrawer: Container(
+        width: Width / 2 - 18,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(25),
+              bottomLeft: Radius.circular(25),
+            ),
+            gradient: LinearGradient(colors: [
+              Color.fromARGB(255, 249, 243, 250),
+              Color.fromARGB(255, 211, 177, 215),
+            ])),
+        child: Column(
+          children: [
+            SizedBox(height: 35),
+            Container(
+              width: 100,
+              height: 100,
+              child: Utils.userImgUrl == null
+                  ? Lottie.asset("lib/asset/image/UserAnimation.json")
+                  : Container(),
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: CachedNetworkImageProvider(Utils.userImgUrl!),
+                      fit: BoxFit.cover),
+                  color: Colors.white54,
+                  borderRadius: BorderRadius.circular(90)),
+            ),
+            //User Name
+            Column(
+              children: [
+                Text(
+                  Utils.firstName!,
+                  style: Utils.style2.copyWith(fontSize: 20),
+                ),
+                Text(
+                  Utils.lastName!,
+                  style: Utils.style2.copyWith(fontSize: 20),
+                ),
+              ],
+            ),
+            CustomDivider(),
+            SizedBox(height: 10),
+            //Buttons
+            InDrawerButton(
+              dbRef: dbRef,
+              title: "Add Event",
+              icon: Icons.add,
+            ),
+            InDrawerButton(
+              dbRef: dbRef,
+              title: "Add Speaker",
+              icon: Icons.add,
+            ),
+            InDrawerButton(
+              dbRef: dbRef,
+              title: "About",
+              icon: Icons.info_outline,
+            ),
+            InDrawerButton(
+              dbRef: dbRef,
+              title: "Logout",
+              icon: Icons.logout,
+            ),
+            SizedBox(height: 20),
+          ],
+        ),
+      ),
       appBar: AppBar(
         title: Row(
           children: [
             Image.asset('lib/asset/image/GDSC_rmbg.png', height: 33),
             Text(
-              ' GDSC UEMJ',
+              " Welcome " + Utils.firstName!,
               style:
                   Utils.style1.copyWith(color: Color.fromARGB(194, 19, 19, 19)),
             ),
           ],
         ),
-        actions: [
-          IconButton(
-              onPressed: () {
-                eventID = DateTime.now().microsecondsSinceEpoch.toString();
-                print(eventID);
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            EntryForm(dbRef: dbRef, eventID: eventID)));
-              },
-              icon: Icon(Icons.add))
-        ],
       ),
 
       //Custom bottomNavigationBar
@@ -177,49 +237,72 @@ class _HomePageState extends State<HomePage> {
                 style: Utils.style1,
               ),
             ),
+            //List of events
             SizedBox(
               width: Width,
               height: 320,
-              child: FirebaseAnimatedList(
-                scrollDirection: Axis.horizontal,
-                query: dbRef,
-                itemBuilder: (context, snapshot, animation, index) {
-                  return FutureBuilder<String>(
-                    future: getFirstImageURL(snapshot),
-                    builder: (context, imageUrlSnapshot) {
-                      if (imageUrlSnapshot.connectionState ==
-                          ConnectionState.waiting) {
-                        // While the URL is being fetched, you can return a loading indicator or placeholder.
-                        return Center(child: CircularProgressIndicator());
-                      } else if (imageUrlSnapshot.hasError) {
-                        // Handle error state, for example, by showing a default image.
-                        return Image.network(
-                            'https://gdscutsa.com/assets/images/banner.webp');
-                      } else
-                        return EventWidget(
-                          dbRef: dbRef,
-                          ID: snapshot.child('id').value.toString(),
-                          name: snapshot.child('name').value.toString(),
-                          dateTime:
-                              snapshot.child('date_time').value.toString(),
-                          venue: snapshot.child('venue').value.toString(),
-                          description:
-                              snapshot.child('description').value.toString(),
-                          organizer:
-                              snapshot.child('organizer').value.toString(),
-                          imageUrl: imageUrlSnapshot.data!,
-                        );
-                    },
-                  );
-                },
+              child: Scrollbar(
+                thickness: 2,
+                child: FirebaseAnimatedList(
+                  scrollDirection: Axis.horizontal,
+                  query: dbRef,
+                  itemBuilder: (context, snapshot, animation, index) {
+                    return FutureBuilder<String>(
+                      future: getFirstImageURL(snapshot),
+                      builder: (context, imageUrlSnapshot) {
+                        if (imageUrlSnapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          // While the URL is being fetched, you can return a loading indicator or placeholder.
+                          return Center(child: CircularProgressIndicator());
+                        } else if (imageUrlSnapshot.hasError) {
+                          // Handle error state, for example, by showing a default image.
+                          return Image.network(
+                              'https://gdscutsa.com/assets/images/banner.webp');
+                        } else
+                          return EventWidget(
+                            dbRef: dbRef,
+                            ID: snapshot.child('id').value.toString(),
+                            name: snapshot.child('name').value.toString(),
+                            dateTime:
+                                snapshot.child('date_time').value.toString(),
+                            venue: snapshot.child('venue').value.toString(),
+                            description:
+                                snapshot.child('description').value.toString(),
+                            organizer:
+                                snapshot.child('organizer').value.toString(),
+                            imageUrl: imageUrlSnapshot.data!,
+                          );
+                      },
+                    );
+                  },
+                ),
               ),
             ),
+            //All Speakers List
             Padding(
               padding: const EdgeInsets.only(left: 15, top: 10),
               child: Text(
                 "Our Speakers",
                 style: Utils.style1,
               ),
+            ),
+            Expanded(
+              child: Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: SizedBox(
+                      child: Scrollbar(
+                    thickness: 2,
+                    child: FirebaseAnimatedList(
+                      query: speakerDbRef,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, snapshot, animation, index) {
+                        return SpeakerTileWidget(
+                            fname: snapshot.child("fname").value.toString(),
+                            lname: snapshot.child("lname").value.toString(),
+                            imgURL: snapshot.child("imgUrl").value.toString());
+                      },
+                    ),
+                  ))),
             ),
           ],
         ),

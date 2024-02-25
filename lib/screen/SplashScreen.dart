@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gdscuemj/screen/HomePage.dart';
+import 'package:gdscuemj/screen/LoginScreen.dart';
 import 'package:gdscuemj/utils/Utils.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -19,10 +21,46 @@ class _SplashScreenState extends State<SplashScreen> {
     Timer(Duration(seconds: 1), () {
       animate();
     });
-    Timer(Duration(seconds: 3), () {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => HomePage()));
-    });
+    checkLoginAndNavigate();
+    //If logge id previously then directly go to HomePage
+  }
+
+  void checkLoginAndNavigate() async {
+    //If logged in previously then directly go to HomePage
+    if (await checkLogInStatus()) {
+      Timer(Duration(seconds: 3), () {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => HomePage()));
+      });
+    }
+    //If not logged in previously then  go to Login screen
+    else {
+      Timer(Duration(seconds: 3), () {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => LoginScreen()));
+      });
+    }
+  }
+
+  Future<bool> checkLogInStatus() async {
+    if (await isLoggedIn()) {
+      //If logged in then go to HomePage
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  //Is user logged in?
+  Future<bool> isLoggedIn() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    User? user = auth.currentUser;
+    //Seting User name
+
+    String? userName = user?.displayName;
+    Utils.userImgUrl = user?.photoURL;
+    Utils.setUserName(userName);
+    return user != null;
   }
 
   double Height = 50;
@@ -30,8 +68,8 @@ class _SplashScreenState extends State<SplashScreen> {
   void animate() {
     if (Height == 50 && Width == 70) {
       setState(() {
-        Height = 100;
-        Width = 140;
+        Height = 90;
+        Width = 130;
       });
     }
   }

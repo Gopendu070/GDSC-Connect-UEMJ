@@ -5,149 +5,120 @@
         "name": "Subham Gourisaria",
         "position": "GDSC Lead",
         "linkedinUrl": "https://www.linkedin.com/in/shipra-shriparn-b36b58214/",
-        "imgUrl": "https://drive.google.com/open?id=1suesWko2_f87WekswBXGhsHo-0k-06Ud"
+        "imgUrl": "lib/asset/member_images/subham.jpg"
       },
       {
         "serialNo": 1,
         "name": "Shipra Shriparn",
         "position": "Community Manager",
         "linkedinUrl": "https://www.linkedin.com/in/shipra-shriparn-b36b58214/",
-        "imgUrl": "https://drive.google.com/open?id=1suesWko2_f87WekswBXGhsHo-0k-06Ud"
-      },
+        "imgUrl": "lib/asset/member_images/Shipra.jpg"  },
       {
         "serialNo": 2,
         "name": "Devraditya Singh Chouhan",
         "position": "Tech Lead",
         "linkedinUrl": "https://www.linkedin.com/in/devchouhan/",
-        "imgUrl": "https://drive.google.com/open?id=1LICQp9AC163v-CUButR2Opmxd6Fil-gx"
-      },
+        "imgUrl": "lib/asset/member_images/Dev.jpg"    },
       {
         "serialNo": 3,
         "name": "Gopendu Manna",
         "position": "Android Developer",
         "linkedinUrl": "https://www.linkedin.com/in/gopendu-manna-686670219/",
-        "imgUrl": "https://drive.google.com/file/d/1NBtMVWOx3-0fVgTohZpVtG3-D8RY1wBO/view?usp=sharing"
-      },
-      {
+        "imgUrl": "lib/asset/member_images/Gopendu.jpg"  }, 
+       {
         "serialNo": 4,
-        "name": "Krishna Dev Ghosh",
-        "position": "Events and Outreach Team",
-        "linkedinUrl": "https://www.linkedin.com/in/krishna-dev-ghosh-6aa990229/",
-        "imgUrl": "https://drive.google.com/open?id=1AMomuZrAf_Xh-POlwl3DZV1tKjVUirLB"
-      },
-      
-      {
-        "serialNo": 5,
         "name": "Yash Raj Anand",
         "position": "PM",
         "linkedinUrl": "https://www.linkedin.com/in/yash-raj-a-0ab34a21b/",
-        "imgUrl": "https://drive.google.com/open?id=1z-jimkZucSIil4htfmocs-Q17zd1_RkQ"
-      },
+        "imgUrl": "lib/asset/member_images/Yash.jpg" },
+      {
+        "serialNo": 5,
+        "name": "Krishna Dev Ghosh",
+        "position": "Events and Outreach Team",
+        "linkedinUrl": "https://www.linkedin.com/in/krishna-dev-ghosh-6aa990229/",
+        "imgUrl": "lib/asset/member_images/Krishna.jpg"  },
+      
+    
       {
         "serialNo": 6,
         "name": "Bibek Thakur",
         "position": "Creativity Head",
-        "linkedinUrl": "www.linkedin.com/in/bibek-thakur-86796326b/",
-        "imgUrl": "https://drive.google.com/open?id=1BR4Cy9S7tm3XiDX9FvH2IghN0LOLtcEM"
-      },
+        "linkedinUrl": "https://www.linkedin.com/in/bibek-thakur-86796326b/",
+        "imgUrl": "lib/asset/member_images/Bibek.png"   },
       {
         "serialNo": 7,
         "name": "Biswanath Mukherjee",
         "position": "Tech Lead",
         "linkedinUrl": "https://www.linkedin.com/in/love-to-code108/",
-        "imgUrl": "https://drive.google.com/open?id=1HvP3VkigQDEppkiGHQ_9F_3ntQKlKKgq"
-      },
+        "imgUrl": "lib/asset/member_images/Biswnath.png" },
       {
         "serialNo": 8,
         "name": "Pabitra Kumar Ghorai",
         "position": "Graphics Designer",
         "linkedinUrl": "https://www.linkedin.com/in/pabitra-kumar-ghorai-258276240/",
-        "imgUrl": "https://drive.google.com/open?id=1YG4YrKPwlohQWolOfl8XqW335hsinAVZ"
-      },
+        "imgUrl":"lib/asset/member_images/Pabitra.jpg"    },
       {
         "serialNo": 9,
         "name": "Gargi Biswas",
         "position": "Social Media Team",
         "linkedinUrl": "https://www.linkedin.com/in/gargi-biswas-6b5011249/",
-        "imgUrl": "https://drive.google.com/open?id=134ndIB2eY-83DF_G2zSlRtPAH82O73W1"
-      },
+        "imgUrl": "lib/asset/member_images/Gargi.jpg" },
+    
       {
-        "serialNo": 10 ,
-        "name": "Piyush Kumar Rai",
-        "position": "Technical Team",
-        "linkedinUrl": "https://www.linkedin.com/in/piyush-kumar-rai-a5901b203/",
-        "imgUrl": "https://drive.google.com/open?id=1Ec2uYb7mabmtJVjP3vbfLemupVcu8pfR"
-      },
-      {
-        "serialNo": 11,
+        "serialNo": 10,
         "name": "Alok Agarwal",
         "position": "Marketing & Operations Team",
         "linkedinUrl": "https://www.linkedin.com/in/alokagarwal565/",
-        "imgUrl": "https://drive.google.com/open?id=1R-HapdPr5op59ESlWFSXGnvNDpPskmwM"
-      },
+        "imgUrl":"lib/asset/member_images/Alok.jpg" },
       {
-        "serialNo": 12,
+        "serialNo": 11,
         "name": "Ashmit Palit",
         "position": "Event Manager",
         "linkedinUrl": "https://www.linkedin.com/in/ashmit-palit-6320a4200/",
-        "imgUrl": "https://drive.google.com/open?id=1mL_xF7y-jvW4BtSiqred-VIwB7jDy8zQ"
-      },
+        "imgUrl":"lib/asset/member_images/ashmit.jpg"   },
       {
-        "serialNo": 13,
+        "serialNo": 12,
         "name": "Surya Sekhar Prajapati",
         "position": "Technical Team",
         "linkedinUrl": "https://www.linkedin.com/in/surya-sekhar-prajapati-632708262/",
-        "imgUrl": "https://drive.google.com/open?id=1P8rs0fxPK1MUSku-pSJr-pHoBmwwGtg3"
-      },
+        "imgUrl": "lib/asset/member_images/Surya.jpg"   },
+      
       {
         "serialNo": 14,
-        "name": "Mohit Sharma",
-        "position": "Technical Team",
-        "linkedinUrl": "https://www.linkedin.com/in/mohit-sharma-857578252/",
-        "imgUrl": "https://drive.google.com/open?id=1Lo397YJvOe-nZrDeHPEQEtGkcvrGfPp5"
-      },
-      {
-        "serialNo": 15,
         "name": "Soumyadeep Das",
         "position": "Events Team",
         "linkedinUrl": "https://www.linkedin.com/in/soumyadeep-das-2a0419252/",
-        "imgUrl": "https://drive.google.com/open?id=1vLpuydh_qL6pvFB_i_CTlzDeRcCiimUO"
-      },
+        "imgUrl": "lib/asset/member_images/Soumyadeep.jpg"   },
       {
         "serialNo": 16,
         "name": "Surajit Mondal",
         "position": "Events Team",
         "linkedinUrl": "https://www.linkedin.com/in/surajit-mondal-078044253/",
-        "imgUrl": "https://drive.google.com/open?id=1IM8uTvIK4GZssJ-jq6YxnUB0yBW_P5On"
-      },
+        "imgUrl": "lib/asset/member_images/Surajit.png"  },
       {
         "serialNo": 17,
         "name": "Mohit Sharma",
         "position": "Technical Team",
         "linkedinUrl": "https://www.linkedin.com/in/mohit-sharma-857578252/",
-        "imgUrl": "https://drive.google.com/open?id=1ic4JiMQreoakCFftYVRuVJsCvAzbEkhv"
-      },
+        "imgUrl":"lib/asset/member_images/Mohit.jpg"     },
       {
         "serialNo": 18,
         "name": "Shibagni Bhattacharjee",
         "position": "Social Media Team",
         "linkedinUrl": "https://www.linkedin.com/in/shibagni-bhattacharjee-07a944283/",
-        "imgUrl": "https://drive.google.com/open?id=1gumD_d4QGMYgjKy8WOKFZ9evJBw0BmV5"
-      },
+        "imgUrl":"lib/asset/member_images/Shibagni.jpg"   },
       {
         "serialNo": 19,
         "name": "Piyush Sharma",
         "position": "Technical Team",
         "linkedinUrl": "https://www.linkedin.com/in/piyush-sharma-aa4846249/",
-        "imgUrl": "https://drive.google.com/open?id=1GLbUts1FIVMbqDSIcY_KTal_b-qwH7tO"
-      },
+        "imgUrl": "lib/asset/member_images/PIYUSH.jpg"   },
       {
         "serialNo": 20,
         "name": "Sushant Roy",
         "position": "Technical Team",
         "linkedinUrl": "https://www.linkedin.com/in/sushant-roy-b51454249/",
-        "imgUrl": "https://drive.google.com/open?id=10cMoYUAFzckE1pUTryecXIEt9LVif9BK"
-      }
+        "imgUrl": "lib/asset/member_images/Sushant.jpg" }
     ]
   }
   
