@@ -115,7 +115,7 @@ class _PickImageState extends State<PickImage> {
 
   chooseImage() async {
     final pickedFile =
-        await picker.pickImage(source: ImageSource.gallery, imageQuality: 70);
+        await picker.pickImage(source: ImageSource.gallery, imageQuality: 63);
     setState(() {
       imageList.add(File(pickedFile!.path));
     });
@@ -139,15 +139,18 @@ class _PickImageState extends State<PickImage> {
     setState(() {
       isUploading = true;
     });
+    int count = 0;
     for (var img in imageList) {
       ref = firebase_storage.FirebaseStorage.instance
           .ref()
-          .child('images/${widget.eventID}/${Path.basename(img.path)}');
+          .child('images/${widget.eventID}/${count}');
+
       await ref.putFile(img).whenComplete(() async {
         await ref.getDownloadURL().then((value) {
           imgRef.add({'url': value});
         });
       });
+      count++;
     }
   }
 }

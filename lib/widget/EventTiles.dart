@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gdscuemj/controller/FireBaseControlls.dart';
+import 'package:gdscuemj/controller/Secret.dart';
 import 'package:gdscuemj/screen/EventDetails.dart';
 import 'package:gdscuemj/screen/UpdateForm.dart';
 import 'package:intl/intl.dart';
@@ -29,13 +31,18 @@ class EventTiles extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    BuildContext currentContext = context;
     var HEIGHT = MediaQuery.of(context).size.height;
     var WIDTH = MediaQuery.of(context).size.width;
-    double h = 410;
+    double h = 400;
     double w = WIDTH * 0.86;
-
+    Secret secret = new Secret();
     return InkWell(
       onLongPress: () {
+        Fluttertoast.showToast(
+            msg: "Only Admins Can Edit",
+            gravity: ToastGravity.CENTER,
+            toastLength: Toast.LENGTH_SHORT);
         showMyDialog(context);
       },
       onTap: () {
@@ -55,7 +62,7 @@ class EventTiles extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(right: 8),
         child: SizedBox(
-          height: h + 0,
+          height: h,
           width: w + 10,
           child: Stack(children: [
             //Base Container of stack
@@ -95,7 +102,7 @@ class EventTiles extends StatelessWidget {
                             ? DecorationImage(
                                 image: CachedNetworkImageProvider(
                                   imageUrl,
-                                  scale: 0.7,
+                                  scale: 0.3,
                                 ),
                                 fit: BoxFit.cover,
                               )
@@ -160,6 +167,7 @@ class EventTiles extends StatelessWidget {
   }
 
   void showMyDialog(BuildContext context) {
+    Secret secret = new Secret();
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -190,18 +198,20 @@ class EventTiles extends StatelessWidget {
               //To Update
               OutlinedButton(
                   onPressed: () {
-                    Navigator.pushReplacement(context, MaterialPageRoute(
-                      builder: (context) {
-                        return UpdateForm(
-                            dbRef: dbRef,
-                            eventID: ID,
-                            description: description,
-                            name: name,
-                            orgName: organizer,
-                            dateTime: dateTime,
-                            venue: venue);
-                      },
-                    ));
+                    secret.showPwDialog(context, () {
+                      Navigator.pushReplacement(context, MaterialPageRoute(
+                        builder: (context) {
+                          return UpdateForm(
+                              dbRef: dbRef,
+                              eventID: ID,
+                              description: description,
+                              name: name,
+                              orgName: organizer,
+                              dateTime: dateTime,
+                              venue: venue);
+                        },
+                      ));
+                    });
                   },
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -209,12 +219,35 @@ class EventTiles extends StatelessWidget {
               //To delete
               OutlinedButton(
                   onPressed: () async {
-                    await dbRef.child(ID).remove();
-                    Fluttertoast.showToast(
-                        msg: 'Deleted',
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.BOTTOM);
-                    Navigator.pop(context);
+                    secret.showPwDialog(context, () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          content: Container(
+                            child: Text(
+                              "Delete this event?",
+                              style: Utils.style2,
+                            ),
+                          ),
+                          actions: [
+                            TextButton(
+                                onPressed: () {
+                                  FireBaseControlls.deleteEvent(
+                                      context: context, dbRef: dbRef, ID: ID);
+                                },
+                                child: Text("Yes")),
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text("No")),
+                          ],
+                        ),
+                      ).then((_) {
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                      });
+                    });
                   },
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,

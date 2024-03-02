@@ -3,6 +3,8 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gdscuemj/controller/FireBaseControlls.dart';
+import 'package:gdscuemj/controller/Secret.dart';
+import 'package:gdscuemj/screen/AdminEdittingScreen.dart';
 import 'package:gdscuemj/screen/EventDetails.dart';
 import 'package:gdscuemj/screen/UpdateForm.dart';
 
@@ -36,6 +38,10 @@ class EventWidget extends StatelessWidget {
 
     return InkWell(
       onLongPress: () {
+        Fluttertoast.showToast(
+            msg: "Only Admins Can Edit",
+            gravity: ToastGravity.CENTER,
+            toastLength: Toast.LENGTH_SHORT);
         showMyDialog(context);
       },
       onTap: () {
@@ -148,6 +154,7 @@ class EventWidget extends StatelessWidget {
   }
 
   void showMyDialog(BuildContext context) {
+    Secret secret = new Secret();
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -178,18 +185,20 @@ class EventWidget extends StatelessWidget {
               //To Update
               OutlinedButton(
                   onPressed: () {
-                    Navigator.pushReplacement(context, MaterialPageRoute(
-                      builder: (context) {
-                        return UpdateForm(
-                            dbRef: dbRef,
-                            eventID: ID,
-                            description: description,
-                            name: name,
-                            orgName: organizer,
-                            dateTime: dateTime,
-                            venue: venue);
-                      },
-                    ));
+                    secret.showPwDialog(context, () {
+                      Navigator.pushReplacement(context, MaterialPageRoute(
+                        builder: (context) {
+                          return UpdateForm(
+                              dbRef: dbRef,
+                              eventID: ID,
+                              description: description,
+                              name: name,
+                              orgName: organizer,
+                              dateTime: dateTime,
+                              venue: venue);
+                        },
+                      ));
+                    });
                   },
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -197,8 +206,35 @@ class EventWidget extends StatelessWidget {
               //To delete
               OutlinedButton(
                   onPressed: () {
-                    FireBaseControlls.deleteEvent(
-                        context: context, dbRef: dbRef, ID: ID);
+                    secret.showPwDialog(context, () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          content: Container(
+                            child: Text(
+                              "Delete this event?",
+                              style: Utils.style2,
+                            ),
+                          ),
+                          actions: [
+                            TextButton(
+                                onPressed: () {
+                                  FireBaseControlls.deleteEvent(
+                                      context: context, dbRef: dbRef, ID: ID);
+                                },
+                                child: Text("Yes")),
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text("No")),
+                          ],
+                        ),
+                      ).then((_) {
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                      });
+                    });
                   },
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,

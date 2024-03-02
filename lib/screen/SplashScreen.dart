@@ -65,11 +65,13 @@ class _SplashScreenState extends State<SplashScreen> {
 
   double Height = 50;
   double Width = 70;
+
+  ///////////////////////////////////////////////////////
   void animate() {
     if (Height == 50 && Width == 70) {
       setState(() {
-        Height = 90;
-        Width = 130;
+        Height = 85;
+        Width = 120;
       });
     }
   }

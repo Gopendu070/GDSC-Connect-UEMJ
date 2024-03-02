@@ -37,11 +37,13 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
   }
 
   final dbRef = FirebaseDatabase.instance.ref('gdscDB');
+  var speakerSerachController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     var Height = MediaQuery.of(context).size.height;
     var Width = MediaQuery.of(context).size.width;
     final navProvider = Provider.of<NavProvider>(context, listen: false);
+    final filterProvider = Provider.of<FilterProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -50,70 +52,125 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
         ),
         centerTitle: true,
       ),
-      body: Container(
-        child: Column(children: [
-          CustomDivider(),
-          SizedBox(height: 25),
-          Row(
-            children: [
-              SizedBox(width: 10),
-              Consumer<FilterProvider>(
-                builder: (context, value, child) => FilterButton(
-                  button: "Upcoming Events",
-                  buttonIndex: 1,
-                ),
-              ),
-              SizedBox(width: 10),
-              Consumer<FilterProvider>(
-                builder: (context, value, child) => FilterButton(
-                  button: "Previous Events",
-                  buttonIndex: 2,
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 25),
-          SizedBox(
-            width: Width,
-            height: Height * .6,
-            child: Consumer<FilterProvider>(
-              builder: (context, value, child) => Scrollbar(
-                thickness: 2,
-                child: FirebaseAnimatedList(
-                  scrollDirection: Axis.horizontal,
-                  query: dbRef,
-                  itemBuilder: (context, snapshot, animation, index) {
-                    return FutureBuilder<String>(
-                      future: getFirstImageURL(snapshot),
-                      builder: (context, imageUrlSnapshot) {
-                        //Filternig the list => upcoming events
-                        if (value.isUpcoming && timeDifference(snapshot) >= 0) {
-                          return eventSelection(snapshot,
-                              imageUrlSnapshot); //returns the filtered event
-                        }
-                        //Filternig the list => past events
-                        else if (!value.isUpcoming &&
-                            timeDifference(snapshot) < 0) {
-                          return eventSelection(snapshot, imageUrlSnapshot);
-                        } else {
-                          return Container();
-                        }
-                      },
-                    );
+      body: SingleChildScrollView(
+        child: Container(
+          child: Column(children: [
+            CustomDivider(),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SizedBox(
+                height: 60,
+                width: double.infinity,
+                child: TextFormField(
+                  controller: speakerSerachController,
+                  cursorHeight: 20,
+                  cursorColor: Color.fromARGB(255, 30, 42, 49),
+                  onChanged: (String value) {
+                    setState(() {});
                   },
+                  decoration: InputDecoration(
+                      hintText: "Search here",
+                      suffixIcon: speakerSerachController.text.isEmpty
+                          ? Icon(Icons.search)
+                          : IconButton(
+                              onPressed: () {
+                                speakerSerachController.clear();
+                                setState(() {});
+                              },
+                              icon: Icon(Icons.highlight_remove)),
+                      border: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Color.fromARGB(255, 30, 42, 49), width: 2),
+                          borderRadius: BorderRadius.circular(29)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Color.fromARGB(255, 30, 42, 49), width: 2),
+                          borderRadius: BorderRadius.circular(29))),
                 ),
               ),
             ),
-          ),
-          Consumer<FilterProvider>(
-            builder:
-                (BuildContext context, FilterProvider value, Widget? child) =>
-                    Text(
-              value.isUpcoming ? "< Upcoming >" : "< Previous >",
-              style: Utils.waterMark,
+            Row(
+              children: [
+                SizedBox(width: 10),
+                Consumer<FilterProvider>(
+                  builder: (context, value, child) => FilterButton(
+                    button: "Upcoming Events",
+                    buttonIndex: 1,
+                  ),
+                ),
+                SizedBox(width: 10),
+                Consumer<FilterProvider>(
+                  builder: (context, value, child) => FilterButton(
+                    button: "Previous Events",
+                    buttonIndex: 2,
+                  ),
+                ),
+              ],
             ),
-          )
-        ]),
+            SizedBox(height: 15),
+            SizedBox(
+              width: Width,
+              height: Height * .55,
+              child: Consumer<FilterProvider>(
+                builder: (context, value, child) => Scrollbar(
+                  thickness: 2,
+                  child: FirebaseAnimatedList(
+                    scrollDirection: Axis.horizontal,
+                    query: dbRef,
+                    itemBuilder: (context, snapshot, animation, index) {
+                      return FutureBuilder<String>(
+                        future: getFirstImageURL(snapshot),
+                        builder: (context, imageUrlSnapshot) {
+                          var eventName =
+                              snapshot.child("name").value.toString();
+                          //Filternig the list => upcoming events
+                          if (speakerSerachController.text.isEmpty) {
+                            if (value.isUpcoming &&
+                                timeDifference(snapshot) >= 0) {
+                              return eventSelection(snapshot,
+                                  imageUrlSnapshot); //returns the filtered event
+                            }
+                            //Filternig the list => past events
+                            else if (!value.isUpcoming &&
+                                timeDifference(snapshot) < 0) {
+                              return eventSelection(snapshot, imageUrlSnapshot);
+                            } else {
+                              return Container();
+                            }
+                          } else if (eventName.toLowerCase().contains(
+                              speakerSerachController.text.toLowerCase())) {
+                            if (value.isUpcoming &&
+                                timeDifference(snapshot) >= 0) {
+                              return eventSelection(snapshot,
+                                  imageUrlSnapshot); //returns the filtered event
+                            }
+                            //Filternig the list => past events
+                            else if (!value.isUpcoming &&
+                                timeDifference(snapshot) < 0) {
+                              return eventSelection(snapshot, imageUrlSnapshot);
+                            } else {
+                              return Container();
+                            }
+                          } else {
+                            return Container();
+                          }
+                        },
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ),
+            Consumer<FilterProvider>(
+              builder:
+                  (BuildContext context, FilterProvider value, Widget? child) =>
+                      Text(
+                value.isUpcoming ? "< Upcoming >" : "< Previous >",
+                style: Utils.waterMark,
+              ),
+            )
+          ]),
+        ),
       ),
       bottomNavigationBar: Consumer<NavProvider>(
         builder: (context, value, child) {

@@ -115,7 +115,7 @@ class _UpdateFormState extends State<UpdateForm> {
                       )
                     : Text(
                         selectedTime +
-                            ' ~ ' +
+                            " " +
                             DateFormat('d MMM, yyyy')
                                 .format(selectedDT)
                                 .toString(),

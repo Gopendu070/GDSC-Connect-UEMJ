@@ -14,6 +14,7 @@ import 'package:gdscuemj/screen/EntryForm.dart';
 import 'package:gdscuemj/screen/SocialPagesScreen.dart';
 import 'package:gdscuemj/screen/TeamScreen.dart';
 import 'package:gdscuemj/utils/Utils.dart';
+import 'package:gdscuemj/widget/ArrowButton.dart';
 import 'package:gdscuemj/widget/CustomDivider.dart';
 import 'package:gdscuemj/widget/DrawerButton.dart';
 import 'package:gdscuemj/widget/EventWidget.dart';
@@ -33,6 +34,14 @@ class _HomePageState extends State<HomePage> {
   final dbRef = FirebaseDatabase.instance.ref('gdscDB');
   final speakerDbRef = FirebaseDatabase.instance.ref('gdscSpeakerDB');
   late String imageUrl1;
+  ScrollController _speakerScrollController = ScrollController();
+  ScrollController _eventScrollController = ScrollController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -233,76 +242,130 @@ class _HomePageState extends State<HomePage> {
             Padding(
               padding: const EdgeInsets.only(left: 15, top: 10),
               child: Text(
-                "Flagship Events",
+                "< Flagship Events >",
                 style: Utils.style1,
               ),
             ),
             //List of events
-            SizedBox(
-              width: Width,
-              height: 320,
-              child: Scrollbar(
-                thickness: 2,
-                child: FirebaseAnimatedList(
-                  scrollDirection: Axis.horizontal,
-                  query: dbRef,
-                  itemBuilder: (context, snapshot, animation, index) {
-                    return FutureBuilder<String>(
-                      future: getFirstImageURL(snapshot),
-                      builder: (context, imageUrlSnapshot) {
-                        if (imageUrlSnapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          // While the URL is being fetched, you can return a loading indicator or placeholder.
-                          return Center(child: CircularProgressIndicator());
-                        } else if (imageUrlSnapshot.hasError) {
-                          // Handle error state, for example, by showing a default image.
-                          return Image.network(
-                              'https://gdscutsa.com/assets/images/banner.webp');
-                        } else
-                          return EventWidget(
-                            dbRef: dbRef,
-                            ID: snapshot.child('id').value.toString(),
-                            name: snapshot.child('name').value.toString(),
-                            dateTime:
-                                snapshot.child('date_time').value.toString(),
-                            venue: snapshot.child('venue').value.toString(),
-                            description:
-                                snapshot.child('description').value.toString(),
-                            organizer:
-                                snapshot.child('organizer').value.toString(),
-                            imageUrl: imageUrlSnapshot.data!,
-                          );
-                      },
-                    );
-                  },
+            Stack(children: [
+              Container(),
+              SizedBox(
+                width: Width,
+                height: 320,
+                child: Scrollbar(
+                  thickness: 2,
+                  child: FirebaseAnimatedList(
+                    controller: _eventScrollController,
+                    scrollDirection: Axis.horizontal,
+                    query: dbRef,
+                    itemBuilder: (context, snapshot, animation, index) {
+                      return FutureBuilder<String>(
+                        future: getFirstImageURL(snapshot),
+                        builder: (context, imageUrlSnapshot) {
+                          if (imageUrlSnapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            // While the URL is being fetched, you can return a loading indicator or placeholder.
+                            return Center(child: CircularProgressIndicator());
+                          } else if (imageUrlSnapshot.hasError) {
+                            // Handle error state, for example, by showing a default image.
+                            return Image.network(
+                                'https://gdscutsa.com/assets/images/banner.webp');
+                          } else
+                            return EventWidget(
+                              dbRef: dbRef,
+                              ID: snapshot.child('id').value.toString(),
+                              name: snapshot.child('name').value.toString(),
+                              dateTime:
+                                  snapshot.child('date_time').value.toString(),
+                              venue: snapshot.child('venue').value.toString(),
+                              description: snapshot
+                                  .child('description')
+                                  .value
+                                  .toString(),
+                              organizer:
+                                  snapshot.child('organizer').value.toString(),
+                              imageUrl: imageUrlSnapshot.data!,
+                            );
+                        },
+                      );
+                    },
+                  ),
                 ),
               ),
-            ),
+              Positioned(
+                top: 127,
+                child: SizedBox(
+                  width: Width,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ArrowButton(
+                        isBackArrow: true,
+                        scrollControll: _eventScrollController,
+                      ),
+                      ArrowButton(
+                        isBackArrow: false,
+                        scrollControll: _eventScrollController,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ]),
             //All Speakers List
             Padding(
               padding: const EdgeInsets.only(left: 15, top: 10),
               child: Text(
-                "Our Speakers",
+                "< Our Speakers >",
                 style: Utils.style1,
               ),
             ),
+
             Expanded(
               child: Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: SizedBox(
-                      child: Scrollbar(
-                    thickness: 2,
-                    child: FirebaseAnimatedList(
-                      query: speakerDbRef,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, snapshot, animation, index) {
-                        return SpeakerTileWidget(
-                            fname: snapshot.child("fname").value.toString(),
-                            lname: snapshot.child("lname").value.toString(),
-                            imgURL: snapshot.child("imgUrl").value.toString());
-                      },
+                padding: const EdgeInsets.only(top: 10),
+                child: Stack(children: [
+                  Container(),
+                  SizedBox(
+                    child: Scrollbar(
+                      thickness: 2,
+                      child: FirebaseAnimatedList(
+                        controller: _speakerScrollController,
+                        query: speakerDbRef,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, snapshot, animation, index) {
+                          return SpeakerTileWidget(
+                              fname: snapshot.child("fname").value.toString(),
+                              lname: snapshot.child("lname").value.toString(),
+                              imgURL:
+                                  snapshot.child("imgUrl").value.toString());
+                        },
+                      ),
                     ),
-                  ))),
+                  ),
+                  Positioned(
+                    top: 100,
+                    child: SizedBox(
+                      width: Width,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          ArrowButton(
+                            isBackArrow: true,
+                            scrollControll: _speakerScrollController,
+                          ),
+                          ArrowButton(
+                            isBackArrow: false,
+                            scrollControll: _speakerScrollController,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ]),
+              ),
             ),
           ],
         ),

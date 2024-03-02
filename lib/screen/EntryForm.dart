@@ -135,7 +135,7 @@ class _EntryFormState extends State<EntryForm> {
                       ),
                       Text(
                         DateFormat('h:mm a').format(selectedTime).toString() +
-                            ' ~ ' +
+                            ' ' +
                             DateFormat('d MMM, yyyy')
                                 .format(selectedDT)
                                 .toString(),

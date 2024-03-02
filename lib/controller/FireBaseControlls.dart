@@ -42,8 +42,8 @@ class FireBaseControlls {
       dateTimeNew = dateTime;
     } else {
       dateTimeNew = selectedTime +
-          ', ' +
-          DateFormat('d MMM').format(selectedDT).toString();
+          " " +
+          DateFormat('d MMM, yyyy').format(selectedDT).toString();
     }
 
     await dbRef.child(eventID.toString()).update({

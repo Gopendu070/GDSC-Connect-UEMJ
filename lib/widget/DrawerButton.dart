@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gdscuemj/controller/Secret.dart';
 import 'package:gdscuemj/screen/AddSpeakerForm.dart';
 import 'package:gdscuemj/screen/EntryForm.dart';
 import 'package:gdscuemj/screen/LoginScreen.dart';
@@ -53,12 +54,12 @@ class InDrawerButton extends StatelessWidget {
                   onPressed: () {
                     logoutFunction();
                   },
-                  child: Text("Yes")),
+                  child: Text("Logout")),
               TextButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: Text("No")),
+                  child: Text("Cancel")),
             ],
           );
         },
@@ -66,20 +67,24 @@ class InDrawerButton extends StatelessWidget {
     }
 
     void chooseAction() {
+      Secret secret = new Secret();
       switch (title) {
         case "Add Event":
           {
             late String eventID;
             eventID = DateTime.now().microsecondsSinceEpoch.toString();
             print(eventID);
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => EntryForm(
-                          dbRef: dbRef,
-                          eventID: eventID,
-                          imgCount: 0,
-                        )));
+
+            secret.showPwDialog(context, () {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => EntryForm(
+                            dbRef: dbRef,
+                            eventID: eventID,
+                            imgCount: 0,
+                          )));
+            });
           }
           break;
         case "Add Speaker":
@@ -87,13 +92,15 @@ class InDrawerButton extends StatelessWidget {
             final speakerDbRef = FirebaseDatabase.instance.ref('gdscSpeakerDB');
             final String speakerID =
                 DateTime.now().millisecondsSinceEpoch.toString();
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => AddSpeakerForm(
-                          speakerID: speakerID,
-                          speakerDbRef: speakerDbRef,
-                        )));
+            secret.showPwDialog(context, () {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AddSpeakerForm(
+                            speakerID: speakerID,
+                            speakerDbRef: speakerDbRef,
+                          )));
+            });
           }
           break;
         case "Logout":

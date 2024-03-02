@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/services.dart';
 import 'package:gdscuemj/controller/FilterProvider.dart';
 import 'package:gdscuemj/controller/Members.dart';
 import 'package:gdscuemj/controller/NavProvider.dart';
+import 'package:gdscuemj/controller/PassProvider.dart';
 import 'package:gdscuemj/screen/HomePage.dart';
 import 'package:gdscuemj/screen/SplashScreen.dart';
 import 'package:gdscuemj/widget/SquareCardWidget.dart';
@@ -33,10 +35,12 @@ class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => NavProvider()),
         ChangeNotifierProvider(create: (_) => FilterProvider()),
+        ChangeNotifierProvider(create: (_) => PassProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
