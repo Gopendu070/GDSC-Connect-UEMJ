@@ -16,6 +16,7 @@ class SocialHandleTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var Width = MediaQuery.of(context).size.width;
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: GestureDetector(
@@ -29,19 +30,21 @@ class SocialHandleTile extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              SizedBox(width: 20),
+              SizedBox(width: Width < Utils.maxPhWidth ? 20 : 110),
               Text(
                 title,
-                style: Utils.style4,
+                style: Width < Utils.maxPhWidth
+                    ? Utils.style4
+                    : Utils.style4.copyWith(fontSize: 18),
               ),
               SizedBox(width: 10),
               Image.asset(
                 icon_path,
-                height: 30,
+                height: Width < Utils.maxPhWidth ? 30 : 35,
               )
             ],
           ),
-          height: 70,
+          height: Width < Utils.maxPhWidth ? 70 : 100,
           width: double.infinity,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gdscuemj/controller/Members.dart';
+import 'package:gdscuemj/utils/Utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MemberTileWidget extends StatelessWidget {
@@ -8,11 +9,12 @@ class MemberTileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var Width = MediaQuery.of(context).size.width;
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
-        width: double.infinity,
-        height: 120,
+        width: Width,
+        height: Width < Utils.maxPhWidth ? 120 : 130,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(14),
             gradient: LinearGradient(
@@ -26,8 +28,8 @@ class MemberTileWidget extends StatelessWidget {
         child: Stack(
           children: [
             Positioned(
-              top: 5,
-              left: 5,
+              top: Width < Utils.maxPhWidth ? 5 : 7,
+              left: Width < Utils.maxPhWidth ? 5 : 7,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(70),
                 child: GestureDetector(
@@ -101,7 +103,7 @@ class MemberTileWidget extends StatelessWidget {
                     padding: const EdgeInsets.all(5.5),
                     child: Image.asset(
                       "lib/asset/image/in_icon.png",
-                      height: 20,
+                      height: Width < Utils.maxPhWidth ? 20 : 27,
                     ),
                   ),
                 ),
@@ -125,15 +127,23 @@ class MemberTileWidget extends StatelessWidget {
               child: ClipRRect(
                   borderRadius: BorderRadius.circular(20),
                   child: Container(
+                      width: MediaQuery.of(context).size.width * 0.65,
                       child: Image.asset(
-                    url,
-                  ))),
+                        url,
+                      ))),
             ),
-            // ElevatedButton(
-            //     onPressed: () {
-            //       Navigator.pop(context);
-            //     },
-            //     child: Text("Close"))
+            TextButton.icon(
+                label: Text(
+                  "Close",
+                  style: TextStyle(color: Colors.white),
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: Icon(
+                  Icons.cancel_outlined,
+                  color: Colors.white,
+                ))
           ],
         );
       },

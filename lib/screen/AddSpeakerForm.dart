@@ -33,12 +33,11 @@ class _AddSpeakerFormState extends State<AddSpeakerForm> {
   Future getImageFromGallery() async {
     pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
-    setState(() {
-      if (pickedFile != null) {
+    if (pickedFile != null)
+      setState(() {
         _image = File(pickedFile!.path);
         print(pickedFile!.path);
-      }
-    });
+      });
   }
 
   @override
@@ -169,20 +168,39 @@ class _AddSpeakerFormState extends State<AddSpeakerForm> {
   void addSpeaker() async {
     final isValid = formKey.currentState!.validate();
     if (isValid) {
-      setState(() {
-        isUploading = true;
-      });
-      print(",okokokokokokoko");
-      Reference rootReference = FirebaseStorage.instance.ref();
-      Reference speakerDirReference = rootReference.child("speaker_images");
-      Reference imgReference = speakerDirReference.child(widget.speakerID);
+      // setState(() {
+      //   isUploading = true;
+      // });
       try {
+        Reference rootReference = FirebaseStorage.instance.ref();
+        Reference speakerDirReference = rootReference.child("speaker_images");
+        Reference imgReference = speakerDirReference.child(widget.speakerID);
+        Fluttertoast.showToast(
+            msg: "Uploading, please wait", toastLength: Toast.LENGTH_LONG);
+        setState(() {
+          isUploading = true;
+        });
         await imgReference.putFile(File(pickedFile!.path));
         _imgURL = await imgReference.getDownloadURL();
         print(_imgURL);
-      } catch (err) {
-        print("ERRORRRRR=> " + err.toString());
+      } on FirebaseException catch (err) {
+        showDialog(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            title: Text('An error occurred!'),
+            content: Text(err.message.toString()),
+            actions: <Widget>[
+              TextButton(
+                child: Text('Okay'),
+                onPressed: () {
+                  Navigator.of(ctx).pop();
+                },
+              ),
+            ],
+          ),
+        );
       }
+
       FireBaseControlls.uploadSpeakerInfo(
           fname: fnameController.text,
           lname: lnameController.text,

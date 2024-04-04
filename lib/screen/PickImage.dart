@@ -140,17 +140,25 @@ class _PickImageState extends State<PickImage> {
       isUploading = true;
     });
     int count = 0;
-    for (var img in imageList) {
-      ref = firebase_storage.FirebaseStorage.instance
-          .ref()
-          .child('images/${widget.eventID}/${count}');
+    try {
+      for (var img in imageList) {
+        ref = firebase_storage.FirebaseStorage.instance
+            .ref()
+            .child('images/${widget.eventID}/${count}');
 
-      await ref.putFile(img).whenComplete(() async {
-        await ref.getDownloadURL().then((value) {
-          imgRef.add({'url': value});
+        await ref.putFile(img).whenComplete(() async {
+          await ref.getDownloadURL().then((value) {
+            imgRef.add({'url': value});
+          });
         });
-      });
-      count++;
+        count++;
+      }
+    } on FirebaseException catch (err) {
+      print("Error:" + err.message.toString());
+      Fluttertoast.showToast(
+          msg: "Sorry, Access Denied",
+          gravity: ToastGravity.BOTTOM,
+          toastLength: Toast.LENGTH_SHORT);
     }
   }
 }

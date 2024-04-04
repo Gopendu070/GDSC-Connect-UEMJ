@@ -117,7 +117,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                             top: 12,
                           ),
                           child: Text(widget.title,
-                              style: Utils.style1.copyWith(fontSize: 21)),
+                              style: Utils.style1.copyWith(fontSize: 24)),
                         ),
                         CustomDivider(),
                         //Organizer's details
@@ -145,7 +145,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                             'About The Event',
                             style: TextStyle(
                                 fontSize: HEIGHT * 0.021,
-                                fontWeight: FontWeight.w500),
+                                fontWeight: FontWeight.w400),
                           ),
                         ),
 
@@ -157,6 +157,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                             style: Utils.style1.copyWith(fontSize: 15),
                           ),
                         ),
+                        SizedBox(height: 8),
                         CustomDivider(),
                         //Gallery
                         imageURLs.isNotEmpty
@@ -172,7 +173,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                                       Text('Event Gallery',
                                           style: TextStyle(
                                               fontSize: HEIGHT * 0.021,
-                                              fontWeight: FontWeight.w500)),
+                                              fontWeight: FontWeight.w400)),
                                       SizedBox(height: 10),
                                       Expanded(
                                         child: Scrollbar(

@@ -185,11 +185,7 @@ class _EntryFormState extends State<EntryForm> {
                                   selectedDT: selectedDT)
                               .whenComplete(() {
                             filterProvider.setImgCount(0);
-                            Fluttertoast.showToast(
-                              msg: "Event Scehduled",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.BOTTOM,
-                            );
+
                             Timer(Duration(seconds: 1), () {
                               Navigator.pop(context);
                             });

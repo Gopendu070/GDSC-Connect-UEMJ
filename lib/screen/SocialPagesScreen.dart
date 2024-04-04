@@ -94,8 +94,11 @@ class _SocialPagesScreenState extends State<SocialPagesScreen> {
                         color: Color.fromARGB(255, 169, 201, 242),
                         borderRadius: BorderRadius.circular(28)),
                     child: Row(
+                      mainAxisAlignment: Width < Utils.maxPhWidth
+                          ? MainAxisAlignment.start
+                          : MainAxisAlignment.spaceAround,
                       children: [
-                        SizedBox(width: 8),
+                        if (Width < Utils.maxPhWidth) SizedBox(width: 8),
                         InkWell(
                           onTap: () {
                             navProvider.selectIndex(0);

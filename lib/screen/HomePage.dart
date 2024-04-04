@@ -7,10 +7,11 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gdscuemj/controller/NavProvider.dart';
+import 'package:gdscuemj/model/Speakers.dart';
 import 'package:gdscuemj/screen/AddSpeakerForm.dart';
 import 'package:gdscuemj/screen/AllEventsScreen.dart';
-import 'package:gdscuemj/screen/EntryForm.dart';
 import 'package:gdscuemj/screen/SocialPagesScreen.dart';
 import 'package:gdscuemj/screen/TeamScreen.dart';
 import 'package:gdscuemj/utils/Utils.dart';
@@ -37,10 +38,38 @@ class _HomePageState extends State<HomePage> {
   ScrollController _speakerScrollController = ScrollController();
   ScrollController _eventScrollController = ScrollController();
 
+  List<Speakers> speakersList = [];
+  Future<List<Speakers>> getSpeakersData() async {
+    try {
+      DatabaseEvent databaseEvent = await speakerDbRef.once();
+      var dataSnapshot = databaseEvent.snapshot;
+      Object? dataMap = dataSnapshot.value;
+      if (dataMap is Map) {
+        int c = 0;
+        dataMap.forEach((key, value1) {
+          var sp = Speakers.fromSnapshot(dataSnapshot.child(key.toString()));
+          speakersList.add(sp);
+          setState(() {});
+          c++;
+        });
+        print("count= $c");
+      }
+    } catch (error) {
+      print('Error fetching data: $error');
+    }
+
+    return speakersList;
+  }
+
+  setSpeakerList() async {
+    speakersList = await getSpeakersData();
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    setSpeakerList();
   }
 
   @override
@@ -52,7 +81,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       //Drawer
       endDrawer: Container(
-        width: Width / 2 - 18,
+        width: 195,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(25),
@@ -106,9 +135,15 @@ class _HomePageState extends State<HomePage> {
             ),
             InDrawerButton(
               dbRef: dbRef,
+              title: "Create",
+              icon: Icons.photo_filter,
+            ),
+            InDrawerButton(
+              dbRef: dbRef,
               title: "About",
               icon: Icons.info_outline,
             ),
+
             InDrawerButton(
               dbRef: dbRef,
               title: "Logout",
@@ -121,7 +156,16 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Row(
           children: [
-            Image.asset('lib/asset/image/GDSC_rmbg.png', height: 33),
+            InkWell(
+                onTap: () {
+                  Fluttertoast.showToast(
+                      backgroundColor: Color.fromARGB(129, 158, 64, 175),
+                      msg: "Hi ${Utils.firstName} 👋🏽",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.CENTER);
+                },
+                child:
+                    Image.asset('lib/asset/image/GDSC_rmbg.png', height: 33)),
             Text(
               " Welcome " + Utils.firstName!,
               style:
@@ -162,8 +206,11 @@ class _HomePageState extends State<HomePage> {
                       color: Color.fromARGB(255, 169, 201, 242),
                       borderRadius: BorderRadius.circular(28)),
                   child: Row(
+                    mainAxisAlignment: Width < Utils.maxPhWidth
+                        ? MainAxisAlignment.start
+                        : MainAxisAlignment.spaceAround,
                     children: [
-                      SizedBox(width: 8),
+                      if (Width < Utils.maxPhWidth) SizedBox(width: 8),
                       //Home Button
 
                       NavigationButton(
@@ -251,7 +298,7 @@ class _HomePageState extends State<HomePage> {
               Container(),
               SizedBox(
                 width: Width,
-                height: 320,
+                height: Width < Utils.maxPhWidth ? 320 : 350,
                 child: Scrollbar(
                   thickness: 2,
                   child: FirebaseAnimatedList(
@@ -293,7 +340,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               Positioned(
-                top: 127,
+                top: Width < Utils.maxPhWidth ? 127 : 136,
                 child: SizedBox(
                   width: Width,
                   child: Row(
@@ -330,40 +377,71 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(
                     child: Scrollbar(
                       thickness: 2,
-                      child: FirebaseAnimatedList(
-                        controller: _speakerScrollController,
-                        query: speakerDbRef,
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, snapshot, animation, index) {
-                          return SpeakerTileWidget(
-                              fname: snapshot.child("fname").value.toString(),
-                              lname: snapshot.child("lname").value.toString(),
-                              imgURL:
-                                  snapshot.child("imgUrl").value.toString());
-                        },
-                      ),
+                      child: Width < Utils.maxPhWidth
+                          ? FirebaseAnimatedList(
+                              controller: _speakerScrollController,
+                              query: speakerDbRef,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder:
+                                  (context, snapshot, animation, index) {
+                                return SpeakerTileWidget(
+                                    fname: snapshot
+                                        .child("fname")
+                                        .value
+                                        .toString(),
+                                    lname: snapshot
+                                        .child("lname")
+                                        .value
+                                        .toString(),
+                                    imgURL: snapshot
+                                        .child("imgUrl")
+                                        .value
+                                        .toString());
+                              },
+                            )
+                          : Scrollbar(
+                              child: GridView.builder(
+                                scrollDirection: Axis.vertical,
+                                itemCount: speakersList.length,
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                  mainAxisExtent: 227,
+                                  mainAxisSpacing: 3,
+                                  crossAxisCount: 4,
+                                ),
+                                itemBuilder: (context, index) {
+                                  return SpeakerTileWidget(
+                                      imgURL: speakersList[index].imgUrl,
+                                      fname:
+                                          speakersList[index].fName.toString(),
+                                      lname: speakersList[index].lName);
+                                },
+                              ),
+                            ),
                     ),
                   ),
-                  Positioned(
-                    top: 100,
-                    child: SizedBox(
-                      width: Width,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          ArrowButton(
-                            isBackArrow: true,
-                            scrollControll: _speakerScrollController,
+                  Width < Utils.maxPhWidth
+                      ? Positioned(
+                          top: 100,
+                          child: SizedBox(
+                            width: Width,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                ArrowButton(
+                                  isBackArrow: true,
+                                  scrollControll: _speakerScrollController,
+                                ),
+                                ArrowButton(
+                                  isBackArrow: false,
+                                  scrollControll: _speakerScrollController,
+                                ),
+                              ],
+                            ),
                           ),
-                          ArrowButton(
-                            isBackArrow: false,
-                            scrollControll: _speakerScrollController,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                        )
+                      : Container(),
                 ]),
               ),
             ),

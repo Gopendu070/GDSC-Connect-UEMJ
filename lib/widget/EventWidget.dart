@@ -31,9 +31,9 @@ class EventWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var HEIGHT = MediaQuery.of(context).size.height;
-    var WIDTH = MediaQuery.of(context).size.width;
-    double h = 295;
+    var Height = MediaQuery.of(context).size.height;
+    var Width = MediaQuery.of(context).size.width;
+    double h = 300;
     double w = 270;
 
     return InkWell(
@@ -61,8 +61,8 @@ class EventWidget extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(right: 12),
         child: SizedBox(
-          height: h + 10,
-          width: w + 10,
+          height: Width < Utils.maxPhWidth ? h + 10 : h + 25,
+          width: Width < Utils.maxPhWidth ? w + 10 : w + 25,
           child: Stack(children: [
             //Base Container of stack
             Container(),
@@ -70,8 +70,8 @@ class EventWidget extends StatelessWidget {
               top: 25,
               left: 25,
               child: Container(
-                height: h - 17,
-                width: w - 17,
+                height: Width < Utils.maxPhWidth ? h - 17 : h,
+                width: Width < Utils.maxPhWidth ? w - 17 : w,
                 decoration: BoxDecoration(
                     color: Color.fromARGB(255, 236, 178, 60),
                     border: Border.all(
@@ -91,10 +91,10 @@ class EventWidget extends StatelessWidget {
                   child: Stack(children: [
                     Positioned(
                       top: 14,
-                      left: 14,
+                      left: Width < Utils.maxPhWidth ? 14 : 10,
                       child: Container(
-                        height: 200,
-                        width: 220,
+                        height: Width < Utils.maxPhWidth ? 200 : 220,
+                        width: Width < Utils.maxPhWidth ? 220 : 240,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(14),
                           image: imageUrl != 'null'
@@ -110,7 +110,7 @@ class EventWidget extends StatelessWidget {
                       ),
                     ),
                     Positioned(
-                        top: 220,
+                        top: Width < Utils.maxPhWidth ? 220 : 233,
                         left: 20,
                         child: SizedBox(
                           width: 218,
@@ -138,8 +138,8 @@ class EventWidget extends StatelessWidget {
                           ),
                         ))
                   ]),
-                  height: h - 20,
-                  width: w - 20,
+                  height: Width < Utils.maxPhWidth ? h - 20 : h - 7,
+                  width: Width < Utils.maxPhWidth ? w - 20 : w - 7,
                   decoration: BoxDecoration(
                       border: Border.all(
                         width: 1.8,

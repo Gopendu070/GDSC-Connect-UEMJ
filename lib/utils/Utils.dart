@@ -5,6 +5,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Utils {
+  static final double maxPhWidth = 390; //max width of phone
+  static final double maxPhHeight = 810; //max height of phone
+
   static int imgCount = 0;
   static String defaultUserLogo =
       "https://firebasestorage.googleapis.com/v0/b/gdsc-uemj-8efa4.appspot.com/o/userLogo.png?alt=media&token=62a98bc4-092e-44a6-9282-29c371a01a95";

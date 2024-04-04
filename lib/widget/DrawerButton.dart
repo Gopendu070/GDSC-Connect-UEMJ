@@ -3,7 +3,9 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gdscuemj/controller/Secret.dart';
+import 'package:gdscuemj/screen/AboutScreen.dart';
 import 'package:gdscuemj/screen/AddSpeakerForm.dart';
+import 'package:gdscuemj/screen/CreateScreen.dart';
 import 'package:gdscuemj/screen/EntryForm.dart';
 import 'package:gdscuemj/screen/LoginScreen.dart';
 import 'package:gdscuemj/utils/Utils.dart';
@@ -87,6 +89,14 @@ class InDrawerButton extends StatelessWidget {
             });
           }
           break;
+        case "About":
+          {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AboutScreen(),
+                ));
+          }
         case "Add Speaker":
           {
             final speakerDbRef = FirebaseDatabase.instance.ref('gdscSpeakerDB');
@@ -101,6 +111,15 @@ class InDrawerButton extends StatelessWidget {
                             speakerDbRef: speakerDbRef,
                           )));
             });
+          }
+          break;
+        case "Create":
+          {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CreateScreen(),
+                ));
           }
           break;
         case "Logout":

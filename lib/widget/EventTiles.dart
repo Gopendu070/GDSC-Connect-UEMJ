@@ -33,9 +33,9 @@ class EventTiles extends StatelessWidget {
   Widget build(BuildContext context) {
     BuildContext currentContext = context;
     var HEIGHT = MediaQuery.of(context).size.height;
-    var WIDTH = MediaQuery.of(context).size.width;
+    var Width = MediaQuery.of(context).size.width;
     double h = 400;
-    double w = WIDTH * 0.86;
+    double w = Width * 0.86;
     Secret secret = new Secret();
     return InkWell(
       onLongPress: () {
@@ -62,8 +62,8 @@ class EventTiles extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(right: 8),
         child: SizedBox(
-          height: h,
-          width: w + 10,
+          height: Width < Utils.maxPhWidth ? h : h,
+          width: Width < Utils.maxPhWidth ? w + 10 : 410,
           child: Stack(children: [
             //Base Container of stack
             Container(),
@@ -71,8 +71,8 @@ class EventTiles extends StatelessWidget {
               top: 25,
               left: 26,
               child: Container(
-                height: h - 10,
-                width: w - 18,
+                height: Width < Utils.maxPhWidth ? h - 10 : h + 5,
+                width: Width < Utils.maxPhWidth ? w - 18 : 365,
                 decoration: BoxDecoration(
                     color: Color.fromARGB(255, 236, 178, 60),
                     border: Border.all(
@@ -85,8 +85,14 @@ class EventTiles extends StatelessWidget {
               top: 20,
               left: 25,
               child: Container(
-                height: h - 20,
-                width: w - 17,
+                height: Width < Utils.maxPhWidth ? h - 20 : h - 5,
+                width: Width < Utils.maxPhWidth ? w - 17 : 353,
+                decoration: BoxDecoration(
+                    border: Border.all(
+                      width: 1.8,
+                    ),
+                    color: Color.fromARGB(255, 243, 251, 245),
+                    borderRadius: BorderRadius.circular(22)),
                 // ignore: sort_child_properties_last
                 child: Stack(children: [
                   Positioned(
@@ -94,8 +100,8 @@ class EventTiles extends StatelessWidget {
                     left: 16,
                     //image
                     child: Container(
-                      height: 270,
-                      width: 275,
+                      height: Width < Utils.maxPhWidth ? 270 : 290,
+                      width: Width < Utils.maxPhWidth ? 275 : 318,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(14),
                         image: imageUrl != 'null'
@@ -111,7 +117,7 @@ class EventTiles extends StatelessWidget {
                     ),
                   ),
                   Positioned(
-                      top: 293,
+                      top: Width < Utils.maxPhWidth ? 293 : 307,
                       left: 25,
                       child: SizedBox(
                         width: 218,
@@ -151,13 +157,6 @@ class EventTiles extends StatelessWidget {
                         ),
                       ))
                 ]),
-
-                decoration: BoxDecoration(
-                    border: Border.all(
-                      width: 1.8,
-                    ),
-                    color: Color.fromARGB(255, 243, 251, 245),
-                    borderRadius: BorderRadius.circular(22)),
               ),
             ),
           ]),

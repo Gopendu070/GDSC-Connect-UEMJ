@@ -130,6 +130,7 @@ class _UpdateFormState extends State<UpdateForm> {
                   final isValid = formkey.currentState!.validate();
                   if (isValid == true) {
                     FireBaseControlls.updateEvent(
+                        context: context,
                         dbRef: widget.dbRef,
                         eventID: widget.eventID,
                         name: nameController.text,
@@ -139,14 +140,6 @@ class _UpdateFormState extends State<UpdateForm> {
                         dateTime: widget.dateTime,
                         selectedDT: selectedDT,
                         selectedTime: selectedTime);
-                    Fluttertoast.showToast(
-                      msg: "Updated",
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.BOTTOM,
-                    );
-                    Timer(Duration(seconds: 1), () {
-                      Navigator.pop(context);
-                    });
                   }
                 },
                 child: Text('Update'))

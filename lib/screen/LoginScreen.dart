@@ -20,6 +20,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   var isLoggingIn = false;
+  //Login function
   signInWithGoogle() async {
     try {
       GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
@@ -55,6 +56,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var Width = MediaQuery.of(context).size.width;
+    var Height = MediaQuery.of(context).size.height;
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -87,6 +90,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: 50,
                       width: double.infinity,
                       decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              Color.fromARGB(214, 238, 206, 244),
+                              Color.fromARGB(89, 242, 220, 240),
+                              Colors.white38
+                            ],
+                          ),
                           border: Border.all(),
                           borderRadius: BorderRadius.circular(40)),
                       child: !isLoggingIn
@@ -114,7 +124,8 @@ class _LoginScreenState extends State<LoginScreen> {
               bottom: 15,
               child: LottieBuilder.asset(
                 'lib/asset/image/LoginAnimation.json',
-                height: 220,
+                height: Height * 0.272,
+                width: Width,
               ))
         ]),
       ),

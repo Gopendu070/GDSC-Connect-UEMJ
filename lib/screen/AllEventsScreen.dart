@@ -89,6 +89,7 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
                 ),
               ),
             ),
+            if (Width > Utils.maxPhWidth) SizedBox(height: 15),
             Row(
               children: [
                 SizedBox(width: 10),
@@ -110,7 +111,7 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
             SizedBox(height: 15),
             SizedBox(
               width: Width,
-              height: Height * .55,
+              height: Width < Utils.maxPhWidth ? Height * .55 : Height * .4,
               child: Consumer<FilterProvider>(
                 builder: (context, value, child) => Scrollbar(
                   thickness: 2,
@@ -161,11 +162,14 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
                 ),
               ),
             ),
+            if (Width > Utils.maxPhWidth) SizedBox(height: 140),
             Consumer<FilterProvider>(
               builder:
                   (BuildContext context, FilterProvider value, Widget? child) =>
                       Text(
-                value.isUpcoming ? "< Upcoming >" : "< Previous >",
+                value.isUpcoming
+                    ? "< Upcoming Events >"
+                    : "< Previous Events >",
                 style: Utils.waterMark,
               ),
             )
@@ -202,8 +206,11 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
                       color: Color.fromARGB(255, 169, 201, 242),
                       borderRadius: BorderRadius.circular(28)),
                   child: Row(
+                    mainAxisAlignment: Width < Utils.maxPhWidth
+                        ? MainAxisAlignment.start
+                        : MainAxisAlignment.spaceAround,
                     children: [
-                      SizedBox(width: 8),
+                      if (Width < Utils.maxPhWidth) SizedBox(width: 8),
                       InkWell(
                         onTap: () {
                           navProvider.selectIndex(0);
