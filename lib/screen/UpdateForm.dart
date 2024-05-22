@@ -4,6 +4,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gdscuemj/controller/FireBaseControlls.dart';
+import 'package:gdscuemj/widget/textField.dart';
 import 'package:intl/intl.dart';
 
 import '../utils/Utils.dart';
@@ -54,139 +55,141 @@ class _UpdateFormState extends State<UpdateForm> {
     var Width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      appBar: AppBar(title: Text('Update Event')),
-      body: Center(
-        child: SingleChildScrollView(
-            child: Column(
-          children: [
-            Form(
-              key: formkey,
-              child: Container(
-                width: Width - 40,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    //name
-                    textField(
-                        label: 'Event  :    ',
-                        hint: 'GDSC MeetUp',
-                        conTroll: nameController,
-                        lines: 1),
-                    //organizer
-                    textField(
-                        label: 'Organizer  : ',
-                        hint: 'GDSC UEMJ',
-                        conTroll: orgController,
-                        lines: 1),
-                    //Description
-                    textField(
-                        label: 'Description :',
-                        hint: 'About the event',
-                        conTroll: descriptController,
-                        lines: 3),
-                    //Venue
-                    textField(
-                        label: 'Venue  :    ',
-                        hint: 'Jaipur, India',
-                        conTroll: venueController,
-                        lines: 1),
-                  ],
+      appBar: AppBar(
+        title: Text('Update Event'),
+        backgroundColor: Color.fromARGB(204, 243, 209, 58),
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+              Color.fromARGB(192, 243, 209, 58),
+              Color.fromARGB(165, 238, 208, 72),
+              // Color.fromARGB(77, 233, 234, 205),
+              Colors.white,
+              Colors.white
+            ])),
+        child: Center(
+          child: SingleChildScrollView(
+              child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Form(
+                key: formkey,
+                child: Container(
+                  width: Width - 40,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      //name
+                      textField(
+                          label: 'Event  :    ',
+                          hint: 'GDSC MeetUp',
+                          conTroll: nameController,
+                          lines: 1),
+                      //organizer
+                      textField(
+                          label: 'Organizer  : ',
+                          hint: 'GDSC UEMJ',
+                          conTroll: orgController,
+                          lines: 1),
+                      //Description
+                      textField(
+                          label: 'Description :',
+                          hint: 'About the event',
+                          conTroll: descriptController,
+                          lines: 6),
+                      //Venue
+                      textField(
+                          label: 'Venue  :    ',
+                          hint: 'Jaipur, India',
+                          conTroll: venueController,
+                          lines: 1),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            //Date & Time
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Event Timings: ',
-                  style: Utils.labelStyle,
-                ),
-                IconButton(
-                  icon: Icon(Icons.calendar_month),
+              //Date & Time
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Event Timings: ',
+                    style: Utils.labelStyle,
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.calendar_month),
+                    onPressed: () {
+                      _selectDate(context);
+                    },
+                  ),
+                  selectedTime == ""
+                      ? Text(
+                          widget.dateTime,
+                          style: Utils.dtStyle,
+                        )
+                      : Text(
+                          selectedTime +
+                              " " +
+                              DateFormat('d MMM, yyyy')
+                                  .format(selectedDT)
+                                  .toString(),
+                          style: Utils.dtStyle,
+                        )
+                ],
+              ),
+              SizedBox(height: 20),
+              //Update Button
+              ElevatedButton(
                   onPressed: () {
-                    _selectDate(context);
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          content: Container(
+                            width: 150,
+                            child: Text(
+                              "Update this event?",
+                              style: Utils.style2.copyWith(
+                                  fontSize: 15, fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                          actions: [
+                            TextButton(
+                                onPressed: () {
+                                  final isValid =
+                                      formkey.currentState!.validate();
+                                  if (isValid == true) {
+                                    FireBaseControlls.updateEvent(
+                                        context: context,
+                                        dbRef: widget.dbRef,
+                                        eventID: widget.eventID,
+                                        name: nameController.text,
+                                        description: descriptController.text,
+                                        org: orgController.text,
+                                        venue: venueController.text,
+                                        dateTime: widget.dateTime,
+                                        selectedDT: selectedDT,
+                                        selectedTime: selectedTime);
+                                  }
+                                },
+                                child: Text("Update")),
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text("Cancel")),
+                          ],
+                        );
+                      },
+                    );
                   },
-                ),
-                selectedTime == ""
-                    ? Text(
-                        widget.dateTime,
-                        style: Utils.dtStyle,
-                      )
-                    : Text(
-                        selectedTime +
-                            " " +
-                            DateFormat('d MMM, yyyy')
-                                .format(selectedDT)
-                                .toString(),
-                        style: Utils.dtStyle,
-                      )
-              ],
-            ),
-            SizedBox(height: 20),
-            //Update Button
-            ElevatedButton(
-                onPressed: () {
-                  final isValid = formkey.currentState!.validate();
-                  if (isValid == true) {
-                    FireBaseControlls.updateEvent(
-                        context: context,
-                        dbRef: widget.dbRef,
-                        eventID: widget.eventID,
-                        name: nameController.text,
-                        description: descriptController.text,
-                        org: orgController.text,
-                        venue: venueController.text,
-                        dateTime: widget.dateTime,
-                        selectedDT: selectedDT,
-                        selectedTime: selectedTime);
-                  }
-                },
-                child: Text('Update'))
-          ],
-        )),
-      ),
-    );
-  }
-
-  //returns a custom widget
-  Widget textField(
-      {required String label,
-      required TextEditingController conTroll,
-      required int lines,
-      required String hint}) {
-    return Padding(
-      padding: const EdgeInsets.all(7.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Text(
-            label,
-            style: Utils.labelStyle,
-          ),
-          SizedBox(
-            width: 200,
-            child: TextFormField(
-              controller: conTroll,
-              maxLines: lines,
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return "Field Required";
-                } else
-                  return null;
-              },
-              decoration: InputDecoration(
-                  hintText: hint,
-                  hintStyle: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 14,
-                      color: Colors.black38),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  )),
-            ),
-          ),
-        ],
+                  child: Text('Update'))
+            ],
+          )),
+        ),
       ),
     );
   }

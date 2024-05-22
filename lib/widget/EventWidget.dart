@@ -33,7 +33,7 @@ class EventWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var Height = MediaQuery.of(context).size.height;
     var Width = MediaQuery.of(context).size.width;
-    double h = 300;
+    double h = 297;
     double w = 270;
 
     return InkWell(
@@ -70,8 +70,8 @@ class EventWidget extends StatelessWidget {
               top: 25,
               left: 25,
               child: Container(
-                height: Width < Utils.maxPhWidth ? h - 17 : h,
-                width: Width < Utils.maxPhWidth ? w - 17 : w,
+                height: Width < Utils.maxPhWidth ? h - 19 : h,
+                width: Width < Utils.maxPhWidth ? w - 19 : w,
                 decoration: BoxDecoration(
                     color: Color.fromARGB(255, 236, 178, 60),
                     border: Border.all(

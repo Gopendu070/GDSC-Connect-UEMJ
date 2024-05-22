@@ -10,10 +10,11 @@ class ViewImage extends StatelessWidget {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
+          title: Text("Event Gallery"),
           leading: IconButton(
-        icon: Icon(Icons.arrow_back),
-        onPressed: () => Navigator.pop(context),
-      )),
+            icon: Icon(Icons.arrow_back),
+            onPressed: () => Navigator.pop(context),
+          )),
       body: Container(
         width: double.infinity,
         height: double.infinity,

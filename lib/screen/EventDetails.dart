@@ -67,6 +67,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
+            size: 28,
             color: Colors.black,
           ),
           onPressed: () => Navigator.pop(context),
@@ -144,8 +145,9 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                           child: Text(
                             'About The Event',
                             style: TextStyle(
+                                color: Color.fromARGB(255, 69, 68, 68),
                                 fontSize: HEIGHT * 0.021,
-                                fontWeight: FontWeight.w400),
+                                fontWeight: FontWeight.w600),
                           ),
                         ),
 
@@ -172,8 +174,10 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                                     children: [
                                       Text('Event Gallery',
                                           style: TextStyle(
+                                              color: Color.fromARGB(
+                                                  255, 69, 68, 68),
                                               fontSize: HEIGHT * 0.021,
-                                              fontWeight: FontWeight.w400)),
+                                              fontWeight: FontWeight.w600)),
                                       SizedBox(height: 10),
                                       Expanded(
                                         child: Scrollbar(

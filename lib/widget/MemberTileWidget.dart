@@ -35,7 +35,10 @@ class MemberTileWidget extends StatelessWidget {
                 child: GestureDetector(
                   onTap: () {
                     showMyImageDialog(
-                        context, Members.members[index]["imgUrl"]);
+                      context,
+                      Members.members[index]["imgUrl"],
+                      Members.members[index]["name"],
+                    );
                   },
                   child: Container(
                       height: 110,
@@ -115,7 +118,7 @@ class MemberTileWidget extends StatelessWidget {
     );
   }
 
-  void showMyImageDialog(BuildContext context, String url) {
+  void showMyImageDialog(BuildContext context, String url, String name) {
     showDialog(
       context: context,
       builder: (context) {
@@ -127,10 +130,17 @@ class MemberTileWidget extends StatelessWidget {
               child: ClipRRect(
                   borderRadius: BorderRadius.circular(20),
                   child: Container(
-                      width: MediaQuery.of(context).size.width * 0.65,
+                      width: MediaQuery.of(context).size.width * 0.7,
                       child: Image.asset(
                         url,
                       ))),
+            ),
+            Text(
+              name,
+              style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold),
             ),
             TextButton.icon(
                 label: Text(

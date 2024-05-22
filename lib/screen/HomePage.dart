@@ -23,6 +23,7 @@ import 'package:gdscuemj/widget/NavigationButton.dart';
 import 'package:gdscuemj/widget/SpeakerTileWidget.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -37,7 +38,7 @@ class _HomePageState extends State<HomePage> {
   late String imageUrl1;
   ScrollController _speakerScrollController = ScrollController();
   ScrollController _eventScrollController = ScrollController();
-
+  var _isConnected = false;
   List<Speakers> speakersList = [];
   Future<List<Speakers>> getSpeakersData() async {
     try {
@@ -65,10 +66,27 @@ class _HomePageState extends State<HomePage> {
     speakersList = await getSpeakersData();
   }
 
+  Future<void> _checkConnectivity() async {
+    final connectivityResult = await Connectivity().checkConnectivity();
+    if (connectivityResult == ConnectivityResult.mobile ||
+        connectivityResult == ConnectivityResult.wifi) {
+      setState(() {
+        _isConnected = true;
+      });
+      print("Connected");
+    } else {
+      print("NOt Connected");
+      setState(() {
+        _isConnected = false;
+      });
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    _checkConnectivity();
     setSpeakerList();
   }
 
@@ -81,7 +99,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       //Drawer
       endDrawer: Container(
-        width: 195,
+        width: 190,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(25),
@@ -160,16 +178,16 @@ class _HomePageState extends State<HomePage> {
                 onTap: () {
                   Fluttertoast.showToast(
                       backgroundColor: Color.fromARGB(129, 158, 64, 175),
-                      msg: "Hi ${Utils.firstName} 👋🏽",
+                      msg: "Hey ${Utils.firstName} 👋🏽",
                       toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.CENTER);
+                      gravity: ToastGravity.BOTTOM);
                 },
                 child:
                     Image.asset('lib/asset/image/GDSC_rmbg.png', height: 33)),
             Text(
               " Welcome " + Utils.firstName!,
               style:
-                  Utils.style1.copyWith(color: Color.fromARGB(194, 19, 19, 19)),
+                  Utils.style1.copyWith(color: Color.fromARGB(182, 39, 38, 38)),
             ),
           ],
         ),
@@ -205,73 +223,72 @@ class _HomePageState extends State<HomePage> {
                   decoration: BoxDecoration(
                       color: Color.fromARGB(255, 169, 201, 242),
                       borderRadius: BorderRadius.circular(28)),
-                  child: Row(
-                    mainAxisAlignment: Width < Utils.maxPhWidth
-                        ? MainAxisAlignment.start
-                        : MainAxisAlignment.spaceAround,
-                    children: [
-                      if (Width < Utils.maxPhWidth) SizedBox(width: 8),
-                      //Home Button
+                  child: Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        //Home Button
 
-                      NavigationButton(
-                        icon: Icons.home_outlined,
-                        index: navProvider.indexArr.elementAt(0),
-                      ),
-
-                      //All Event Button
-                      InkWell(
-                        onTap: () {
-                          navProvider.selectIndex(1);
-                          Timer(Duration(milliseconds: 200), () {
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => AllEventsScreen(),
-                                ));
-                          });
-                        },
-                        child: NavigationButton(
-                          icon: Icons.calendar_month_outlined,
-                          index: navProvider.indexArr.elementAt(1),
+                        NavigationButton(
+                          icon: Icons.home_outlined,
+                          index: navProvider.indexArr.elementAt(0),
                         ),
-                      ),
 
-                      //Team Button
-                      InkWell(
-                        onTap: () {
-                          navProvider.selectIndex(2);
-                          Timer(Duration(milliseconds: 200), () {
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => TeamScreen(),
-                                ));
-                          });
-                        },
-                        child: NavigationButton(
-                          icon: Icons.group_outlined,
-                          index: navProvider.indexArr.elementAt(2),
+                        //All Event Button
+                        InkWell(
+                          onTap: () {
+                            navProvider.selectIndex(1);
+                            Timer(Duration(milliseconds: 200), () {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AllEventsScreen(),
+                                  ));
+                            });
+                          },
+                          child: NavigationButton(
+                            icon: Icons.calendar_month_outlined,
+                            index: navProvider.indexArr.elementAt(1),
+                          ),
                         ),
-                      ),
 
-                      //Socials Buuton
-                      InkWell(
-                        onTap: () {
-                          navProvider.selectIndex(3);
-                          Timer(Duration(milliseconds: 200), () {
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => SocialPagesScreen(),
-                                ));
-                          });
-                        },
-                        child: NavigationButton(
-                          icon: Icons.star_border_rounded,
-                          index: navProvider.indexArr.elementAt(3),
+                        //Team Button
+                        InkWell(
+                          onTap: () {
+                            navProvider.selectIndex(2);
+                            Timer(Duration(milliseconds: 200), () {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => TeamScreen(),
+                                  ));
+                            });
+                          },
+                          child: NavigationButton(
+                            icon: Icons.group_outlined,
+                            index: navProvider.indexArr.elementAt(2),
+                          ),
                         ),
-                      ),
-                    ],
+
+                        //Socials Buuton
+                        InkWell(
+                          onTap: () {
+                            navProvider.selectIndex(3);
+                            Timer(Duration(milliseconds: 200), () {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => SocialPagesScreen(),
+                                  ));
+                            });
+                          },
+                          child: NavigationButton(
+                            icon: Icons.star_border_rounded,
+                            index: navProvider.indexArr.elementAt(3),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -279,175 +296,230 @@ class _HomePageState extends State<HomePage> {
           );
         },
       ),
-      body: Container(
-        width: Width,
-        height: Height,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CustomDivider(),
-            Padding(
-              padding: const EdgeInsets.only(left: 15, top: 10),
-              child: Text(
-                "< Flagship Events >",
-                style: Utils.style1,
-              ),
-            ),
-            //List of events
-            Stack(children: [
-              Container(),
-              SizedBox(
-                width: Width,
-                height: Width < Utils.maxPhWidth ? 320 : 350,
-                child: Scrollbar(
-                  thickness: 2,
-                  child: FirebaseAnimatedList(
-                    controller: _eventScrollController,
-                    scrollDirection: Axis.horizontal,
-                    query: dbRef,
-                    itemBuilder: (context, snapshot, animation, index) {
-                      return FutureBuilder<String>(
-                        future: getFirstImageURL(snapshot),
-                        builder: (context, imageUrlSnapshot) {
-                          if (imageUrlSnapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            // While the URL is being fetched, you can return a loading indicator or placeholder.
-                            return Center(child: CircularProgressIndicator());
-                          } else if (imageUrlSnapshot.hasError) {
-                            // Handle error state, for example, by showing a default image.
-                            return Image.network(
-                                'https://gdscutsa.com/assets/images/banner.webp');
-                          } else
-                            return EventWidget(
-                              dbRef: dbRef,
-                              ID: snapshot.child('id').value.toString(),
-                              name: snapshot.child('name').value.toString(),
-                              dateTime:
-                                  snapshot.child('date_time').value.toString(),
-                              venue: snapshot.child('venue').value.toString(),
-                              description: snapshot
-                                  .child('description')
-                                  .value
-                                  .toString(),
-                              organizer:
-                                  snapshot.child('organizer').value.toString(),
-                              imageUrl: imageUrlSnapshot.data!,
-                            );
-                        },
-                      );
-                    },
-                  ),
-                ),
-              ),
-              Positioned(
-                top: Width < Utils.maxPhWidth ? 127 : 136,
-                child: SizedBox(
-                  width: Width,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      ArrowButton(
-                        isBackArrow: true,
-                        scrollControll: _eventScrollController,
-                      ),
-                      ArrowButton(
-                        isBackArrow: false,
-                        scrollControll: _eventScrollController,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ]),
-            //All Speakers List
-            Padding(
-              padding: const EdgeInsets.only(left: 15, top: 10),
-              child: Text(
-                "< Our Speakers >",
-                style: Utils.style1,
-              ),
-            ),
-
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 10),
-                child: Stack(children: [
-                  Container(),
-                  SizedBox(
-                    child: Scrollbar(
-                      thickness: 2,
-                      child: Width < Utils.maxPhWidth
-                          ? FirebaseAnimatedList(
-                              controller: _speakerScrollController,
-                              query: speakerDbRef,
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder:
-                                  (context, snapshot, animation, index) {
-                                return SpeakerTileWidget(
-                                    fname: snapshot
-                                        .child("fname")
-                                        .value
-                                        .toString(),
-                                    lname: snapshot
-                                        .child("lname")
-                                        .value
-                                        .toString(),
-                                    imgURL: snapshot
-                                        .child("imgUrl")
-                                        .value
-                                        .toString());
-                              },
-                            )
-                          : Scrollbar(
-                              child: GridView.builder(
-                                scrollDirection: Axis.vertical,
-                                itemCount: speakersList.length,
-                                gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                  mainAxisExtent: 227,
-                                  mainAxisSpacing: 3,
-                                  crossAxisCount: 4,
-                                ),
-                                itemBuilder: (context, index) {
-                                  return SpeakerTileWidget(
-                                      imgURL: speakersList[index].imgUrl,
-                                      fname:
-                                          speakersList[index].fName.toString(),
-                                      lname: speakersList[index].lName);
-                                },
-                              ),
-                            ),
+      body: _isConnected
+          ? Container(
+              width: Width,
+              height: Height,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CustomDivider(),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: 15,
+                    ),
+                    child: Text(
+                      "< Flagship Events >",
+                      style: Utils.style1,
                     ),
                   ),
-                  Width < Utils.maxPhWidth
-                      ? Positioned(
-                          top: 100,
-                          child: SizedBox(
-                            width: Width,
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                ArrowButton(
-                                  isBackArrow: true,
-                                  scrollControll: _speakerScrollController,
-                                ),
-                                ArrowButton(
-                                  isBackArrow: false,
-                                  scrollControll: _speakerScrollController,
-                                ),
-                              ],
+                  //List of events
+                  Stack(children: [
+                    Container(),
+                    SizedBox(
+                      width: Width,
+                      height: Width < Utils.maxPhWidth ? 310 : 350,
+                      child: Scrollbar(
+                        thickness: 2,
+                        child: FirebaseAnimatedList(
+                          controller: _eventScrollController,
+                          scrollDirection: Axis.horizontal,
+                          query: dbRef,
+                          itemBuilder: (context, snapshot, animation, index) {
+                            return FutureBuilder<String>(
+                              future: getFirstImageURL(snapshot),
+                              builder: (context, imageUrlSnapshot) {
+                                if (imageUrlSnapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  // While the URL is being fetched, you can return a loading indicator or placeholder.
+                                  return Center(
+                                      child: CircularProgressIndicator());
+                                } else if (imageUrlSnapshot.hasError) {
+                                  // Handle error state, for example, by showing a default image.
+                                  return Image.network(
+                                      'https://gdscutsa.com/assets/images/banner.webp');
+                                } else
+                                  return EventWidget(
+                                    dbRef: dbRef,
+                                    ID: snapshot.child('id').value.toString(),
+                                    name:
+                                        snapshot.child('name').value.toString(),
+                                    dateTime: snapshot
+                                        .child('date_time')
+                                        .value
+                                        .toString(),
+                                    venue: snapshot
+                                        .child('venue')
+                                        .value
+                                        .toString(),
+                                    description: snapshot
+                                        .child('description')
+                                        .value
+                                        .toString(),
+                                    organizer: snapshot
+                                        .child('organizer')
+                                        .value
+                                        .toString(),
+                                    imageUrl: imageUrlSnapshot.data!,
+                                  );
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      top: Width < Utils.maxPhWidth ? 127 : 136,
+                      child: SizedBox(
+                        width: Width,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            ArrowButton(
+                              isBackArrow: true,
+                              scrollControll: _eventScrollController,
                             ),
+                            ArrowButton(
+                              isBackArrow: false,
+                              scrollControll: _eventScrollController,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ]),
+                  //All Speakers List
+                  Padding(
+                    padding: const EdgeInsets.only(left: 15, top: 10),
+                    child: InkWell(
+                      onTap: () {
+                        print("Heigh= $Height, Width= $Width");
+                        Fluttertoast.showToast(
+                            msg:
+                                "${Height.toStringAsFixed(2)}, ${Width.toStringAsFixed(2)}");
+                      },
+                      child: Text(
+                        "< Our Speakers >",
+                        style: Utils.style1,
+                      ),
+                    ),
+                  ),
+
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: Stack(children: [
+                        Container(),
+                        SizedBox(
+                          child: Scrollbar(
+                            thickness: 2,
+                            child: Width < Utils.maxPhWidth
+                                ? FirebaseAnimatedList(
+                                    controller: _speakerScrollController,
+                                    query: speakerDbRef,
+                                    scrollDirection: Axis.horizontal,
+                                    itemBuilder:
+                                        (context, snapshot, animation, index) {
+                                      return SpeakerTileWidget(
+                                          fname: snapshot
+                                              .child("fname")
+                                              .value
+                                              .toString(),
+                                          lname: snapshot
+                                              .child("lname")
+                                              .value
+                                              .toString(),
+                                          imgURL: snapshot
+                                              .child("imgUrl")
+                                              .value
+                                              .toString());
+                                    },
+                                  )
+                                : Scrollbar(
+                                    child: GridView.builder(
+                                      scrollDirection: Axis.vertical,
+                                      itemCount: speakersList.length,
+                                      gridDelegate:
+                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                        mainAxisExtent: 227,
+                                        mainAxisSpacing: 3,
+                                        crossAxisCount: 4,
+                                      ),
+                                      itemBuilder: (context, index) {
+                                        return SpeakerTileWidget(
+                                            imgURL: speakersList[index].imgUrl,
+                                            fname: speakersList[index]
+                                                .fName
+                                                .toString(),
+                                            lname: speakersList[index].lName);
+                                      },
+                                    ),
+                                  ),
                           ),
-                        )
-                      : Container(),
-                ]),
+                        ),
+                        Width < Utils.maxPhWidth
+                            ? Positioned(
+                                top: 100,
+                                child: SizedBox(
+                                  width: Width,
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      ArrowButton(
+                                        isBackArrow: true,
+                                        scrollControll:
+                                            _speakerScrollController,
+                                      ),
+                                      ArrowButton(
+                                        isBackArrow: false,
+                                        scrollControll:
+                                            _speakerScrollController,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )
+                            : Container(),
+                      ]),
+                    ),
+                  ),
+                ],
+              ),
+            )
+          : Container(
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    CustomDivider(),
+                    Container(
+                      height: Height * 0.77,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          LottieBuilder.asset(
+                            'lib/asset/image/noInternet.json',
+                            height: Height * 0.16,
+                            width: Width / 2,
+                          ),
+                          Text(
+                            "Oops!",
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.blueGrey[900]),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ],
-        ),
-      ),
     );
   }
 

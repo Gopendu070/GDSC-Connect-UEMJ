@@ -49,6 +49,10 @@ dependencies:
   lottie: ^2.7.0
   firebase_auth: ^4.16.0
   google_sign_in: ^6.1.6
+  screenshot: ^2.5.0
+  image_gallery_saver: ^2.0.3
+  permission_handler: ^11.0.1
+  connectivity_plus: ^5.0.2
 
 dev_dependencies:
   flutter_test:

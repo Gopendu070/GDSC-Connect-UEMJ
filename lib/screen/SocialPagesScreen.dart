@@ -93,68 +93,66 @@ class _SocialPagesScreenState extends State<SocialPagesScreen> {
                     decoration: BoxDecoration(
                         color: Color.fromARGB(255, 169, 201, 242),
                         borderRadius: BorderRadius.circular(28)),
-                    child: Row(
-                      mainAxisAlignment: Width < Utils.maxPhWidth
-                          ? MainAxisAlignment.start
-                          : MainAxisAlignment.spaceAround,
-                      children: [
-                        if (Width < Utils.maxPhWidth) SizedBox(width: 8),
-                        InkWell(
-                          onTap: () {
-                            navProvider.selectIndex(0);
-                            //  if (navProvider.selectedInd != 0)
-                            Timer(Duration(milliseconds: 200), () {
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => HomePage(),
-                                  ));
-                            });
-                          },
-                          child: NavigationButton(
-                            icon: Icons.home_outlined,
-                            index: navProvider.indexArr.elementAt(0),
-                          ),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            if (navProvider.selectedInd != 1) {
-                              navProvider.selectIndex(1);
+                    child: Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              navProvider.selectIndex(0);
                               Timer(Duration(milliseconds: 200), () {
                                 Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => AllEventsScreen(),
+                                      builder: (context) => HomePage(),
                                     ));
                               });
-                            }
-                          },
-                          child: NavigationButton(
-                            icon: Icons.calendar_month_outlined,
-                            index: navProvider.indexArr.elementAt(1),
+                            },
+                            child: NavigationButton(
+                              icon: Icons.home_outlined,
+                              index: navProvider.indexArr.elementAt(0),
+                            ),
                           ),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            navProvider.selectIndex(2);
-                            Timer(Duration(milliseconds: 200), () {
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => TeamScreen(),
-                                  ));
-                            });
-                          },
-                          child: NavigationButton(
-                            icon: Icons.group_outlined,
-                            index: navProvider.indexArr.elementAt(2),
+                          InkWell(
+                            onTap: () {
+                              if (navProvider.selectedInd != 1) {
+                                navProvider.selectIndex(1);
+                                Timer(Duration(milliseconds: 200), () {
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => AllEventsScreen(),
+                                      ));
+                                });
+                              }
+                            },
+                            child: NavigationButton(
+                              icon: Icons.calendar_month_outlined,
+                              index: navProvider.indexArr.elementAt(1),
+                            ),
                           ),
-                        ),
-                        NavigationButton(
-                          icon: Icons.star_border_rounded,
-                          index: navProvider.indexArr.elementAt(3),
-                        ),
-                      ],
+                          InkWell(
+                            onTap: () {
+                              navProvider.selectIndex(2);
+                              Timer(Duration(milliseconds: 200), () {
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => TeamScreen(),
+                                    ));
+                              });
+                            },
+                            child: NavigationButton(
+                              icon: Icons.group_outlined,
+                              index: navProvider.indexArr.elementAt(2),
+                            ),
+                          ),
+                          NavigationButton(
+                            icon: Icons.star_border_rounded,
+                            index: navProvider.indexArr.elementAt(3),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

@@ -8,6 +8,7 @@ import 'package:gdscuemj/controller/FilterProvider.dart';
 import 'package:gdscuemj/controller/FireBaseControlls.dart';
 import 'package:gdscuemj/screen/PickImage.dart';
 import 'package:gdscuemj/utils/Utils.dart';
+import 'package:gdscuemj/widget/textField.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -26,7 +27,6 @@ class _EntryFormState extends State<EntryForm> {
   var selectedDT = DateTime.now();
   var selectedTime = DateTime.now();
   final formkey = GlobalKey<FormState>();
-
   var nameController = TextEditingController();
   var orgController = TextEditingController();
   var descriptController = TextEditingController();
@@ -108,7 +108,7 @@ class _EntryFormState extends State<EntryForm> {
                               label: 'Description',
                               hint: 'About the event',
                               conTroll: descriptController,
-                              lines: 3),
+                              lines: 4),
                           //Venue
                           textField(
                               label: 'Venue',
@@ -203,46 +203,13 @@ class _EntryFormState extends State<EntryForm> {
   }
 
   //returns a custom widget
-  Widget textField(
-      {required String label,
-      required TextEditingController conTroll,
-      required int lines,
-      required String hint}) {
-    return Padding(
-      padding: const EdgeInsets.all(7.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          SizedBox(
-            width: 330,
-            child: TextFormField(
-              controller: conTroll,
-              maxLines: lines,
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return "Field Required";
-                } else
-                  return null;
-              },
-              decoration: InputDecoration(
-                  label: Text(
-                    label,
-                    style: Utils.labelStyle,
-                  ),
-                  hintText: hint,
-                  hintStyle: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 14,
-                      color: Colors.black38),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  )),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  // Widget textField(
+  //     {required String label,
+  //     required TextEditingController conTroll,
+  //     required int lines,
+  //     required String hint}) {
+  //   return
+  // }
 
   //Date Picker
   Future<void> _selectDate(BuildContext context) async {

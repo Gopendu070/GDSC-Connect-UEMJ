@@ -121,12 +121,13 @@ class _LoginScreenState extends State<LoginScreen> {
             ],
           ),
           Positioned(
-              bottom: 15,
-              child: LottieBuilder.asset(
-                'lib/asset/image/LoginAnimation.json',
-                height: Height * 0.272,
-                width: Width,
-              ))
+            bottom: 15,
+            child: LottieBuilder.asset(
+              'lib/asset/image/LoginAnimation.json',
+              height: Height * 0.272,
+              width: Width,
+            ),
+          )
         ]),
       ),
     );

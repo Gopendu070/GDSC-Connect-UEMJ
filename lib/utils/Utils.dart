@@ -5,8 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Utils {
-  static final double maxPhWidth = 390; //max width of phone
-  static final double maxPhHeight = 810; //max height of phone
+  static final double maxPhWidth = 399.9; //max width of phone
+  static final double maxPhHeight = 810.0; //max height of phone
 
   static int imgCount = 0;
   static String defaultUserLogo =

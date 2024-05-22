@@ -42,15 +42,20 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (_) => FilterProvider()),
         ChangeNotifierProvider(create: (_) => PassProvider()),
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'GDSC UEMJ',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-        ),
-        home: SplashScreen(),
-      ),
+      child: Builder(builder: (context) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+          child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'GDSC UEMJ',
+            theme: ThemeData(
+              colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+              useMaterial3: true,
+            ),
+            home: SplashScreen(),
+          ),
+        );
+      }),
     );
   }
 }

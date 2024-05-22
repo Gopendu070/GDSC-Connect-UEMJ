@@ -20,11 +20,11 @@ class NavigationButton extends StatelessWidget {
     var Width = MediaQuery.of(context).size.width;
     //color and elevation
     return Padding(
-      padding: const EdgeInsets.all(6.0),
+      padding: const EdgeInsets.all(5.0),
       child: Card(
         elevation: navProvider.selectedInd == index ? 1.7 : 5.8,
         child: Container(
-          width: Width < Utils.maxPhWidth ? 64 : 90,
+          width: Width < Utils.maxPhWidth ? 62 : 90,
           height: 50,
           child: Icon(
             icon,
