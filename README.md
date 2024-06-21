@@ -2,11 +2,20 @@
 
 Welcome to the GDSC UEM, Jaipur app! This Flutter-based Android application provides comprehensive details about the Google Developer Student Club (GDSC) at UEM, Jaipur. With this app, users can stay updated with the club's events, learn more about the club and its members, create customized club badges, and access all the club's social media handles effortlessly.
 ## Galery
-![WhatsApp Image 2024-06-20 at 09 50 41_c93edfdf](https://github.com/Gopendu070/GDSC-UEMJ/assets/92077709/3a1567a3-0933-4df3-bc2e-421b017eaead) ![WhatsApp Image 2024-06-20 at 09 50 42_cb1f68c8](https://github.com/Gopendu070/GDSC-UEMJ/assets/92077709/34b43d9d-2210-4bf4-a1f6-08aa8af137c1)
+![WhatsApp Image 2024-06-20 at 09 50 41_c93edfdf](https://github.com/Gopendu070/GDSC-UEMJ/assets/92077709/3a1567a3-0933-4df3-bc2e-421b017eaead) 
+
+![WhatsApp Image 2024-06-20 at 09 50 42_cb1f68c8](https://github.com/Gopendu070/GDSC-UEMJ/assets/92077709/34b43d9d-2210-4bf4-a1f6-08aa8af137c1)
+
 ![WhatsApp Image 2024-06-20 at 09 50 43_78ca094e](https://github.com/Gopendu070/GDSC-UEMJ/assets/92077709/a28be360-6409-4dd6-b5bc-86b7a9c8cffd)
+
 ![WhatsApp Image 2024-06-20 at 09 50 43_378bc296](https://github.com/Gopendu070/GDSC-UEMJ/assets/92077709/4e0d1002-6063-4c2e-9408-896253890f45)
+
+![WhatsApp Image 2024-06-21 at 19 23 04_ad6f874a](https://github.com/Gopendu070/GDSC-Connect-UEMJ/assets/92077709/ce04580b-4277-4366-9fc4-d617a489aefa)
+
 ![WhatsApp Image 2024-06-20 at 09 50 44_18b6036b](https://github.com/Gopendu070/GDSC-UEMJ/assets/92077709/be2cd73b-8cb2-4c8c-ad4c-9b47c3dd88ea)
+
 ![WhatsApp Image 2024-06-20 at 09 50 45_fc166506](https://github.com/Gopendu070/GDSC-UEMJ/assets/92077709/1729a9e1-f3b3-4f48-b047-c1be468cd39f)
+
 ![WhatsApp Image 2024-06-20 at 09 50 45_abab3fff](https://github.com/Gopendu070/GDSC-UEMJ/assets/92077709/aba802a3-ef0c-4a1d-a956-3b4888676f38)
 
 
