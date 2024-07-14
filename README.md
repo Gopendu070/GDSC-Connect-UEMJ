@@ -1,6 +1,10 @@
 # GDSC UEM, Jaipur App
 
 Welcome to the GDSC UEM, Jaipur app! This Flutter-based Android application provides comprehensive details about the Google Developer Student Club (GDSC) at UEM, Jaipur. With this app, users can stay updated with the club's events, learn more about the club and its members, create customized club badges, and access all the club's social media handles effortlessly.
+
+## Project Video Link
+https://drive.google.com/file/d/1aFzENRKOQMdH9z08867u3fKACJ2DJUOW/view?usp=sharing
+
 ## Galery
 ![WhatsApp Image 2024-06-20 at 09 50 41_c93edfdf](https://github.com/Gopendu070/GDSC-UEMJ/assets/92077709/3a1567a3-0933-4df3-bc2e-421b017eaead) 
 
