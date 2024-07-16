@@ -14,7 +14,6 @@ https://drive.google.com/file/d/1aFzENRKOQMdH9z08867u3fKACJ2DJUOW/view?usp=shari
 
 ![IMG-20240716-WA0007](https://github.com/user-attachments/assets/e0f479bb-395b-48c1-9446-cdb4b9d1b423)
 
-![WhatsApp Image 2024-06-20 at 09 50 45_fc166506](https://github.com/user-attachments/assets/d9b027bd-64e5-499b-8274-9e0676fe47c5)
 
 ## Features
 
